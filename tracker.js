@@ -3,38 +3,35 @@
 let items = {
     upgrades: [
         "missile_launcher",
-        "super_missile",
-        "seeker_launcher",
-        "morph_ball_bomb",
-        
         "dark_beam",
         "light_beam",
         "annihilator_beam",
-        "power_bomb",
+        "dark_suit",
+        "morph_ball_bomb",
+        "violet_translator",
         
+        "super_missile",
         "darkburst",
         "sunburst",
         "sonic_boom",
-        "boost_ball",
+        "light_suit",
+        "power_bomb",
+        "amber_translator",
         
+        "seeker_launcher",
+        "",
         "dark_visor",
         "echo_visor",
         "",
-        "spider_ball",
+        "boost_ball",
+        "emerald_translator",
         
+        "energy_transfer_module",
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
-        
-        "energy_transfer_module",
-        "",
-        "dark_suit",
-        "light_suit",
-        
-        "violet_translator",
-        "amber_translator",
-        "emerald_translator",
+        "spider_ball",
         "cobalt_translator",
     ],
     
