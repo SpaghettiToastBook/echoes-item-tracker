@@ -46,6 +46,11 @@ main {
     line-height: 2;
 }
 
+#buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
 input[type="number"] {
    width: 7ch;
 }

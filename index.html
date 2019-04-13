@@ -50,9 +50,9 @@
                     <br/>
                     <label><input type="number" id="S-beam_ammo_expansion-count" min="0" value="4"/> Beam Ammo Expansions</label>
                     <br/>
-                    <label><input type="number" id="S-dark_ammo_expansion-count" min="0" value="10" disabled=""/> Dark Ammo Expansions</label>
+                    <label><input type="number" id="S-dark_ammo_expansion-count" min="0" value="0" disabled=""/> Dark Ammo Expansions</label>
                     <br/>
-                    <label><input type="number" id="S-light_ammo_expansion-count" min="0" value="10" disabled=""/> Light Ammo Expansions</label>
+                    <label><input type="number" id="S-light_ammo_expansion-count" min="0" value="0" disabled=""/> Light Ammo Expansions</label>
                 </fieldset>
                 <fieldset>
                     <legend>Ammo given by expansions</legend>
@@ -64,12 +64,15 @@
                     <br/>
                     <label><input type="number" id="S-beam_ammo_expansion-per" min="0" value="50"/> beam ammo per Beam Ammo Expansion</label>
                     <br/>
-                    <label><input type="number" id="S-dark_ammo_expansion-per" min="0" value="20" disabled=""/> dark ammo per Dark Ammo Expansion</label>
+                    <label><input type="number" id="S-dark_ammo_expansion-per" min="0" value="0" disabled=""/> dark ammo per Dark Ammo Expansion</label>
                     <br/>
-                    <label><input type="number" id="S-light_ammo_expansion-per" min="0" value="20" disabled=""/> light ammo per Light Ammo Expansion</label>
+                    <label><input type="number" id="S-light_ammo_expansion-per" min="0" value="0" disabled=""/> light ammo per Light Ammo Expansion</label>
                 </fieldset>
-                <div>
-                    <p><input type="reset" value="Reset settings"/><br/></p>
+                <div id="buttons">
+                    <div>
+                        <p><button type="button" id="set-vanilla"/>Vanilla game settings</button></p>
+                        <p><button type="button" id="set-randovania">Default Randovania settings</button></p>
+                    </div>
                     <p><button type="button" id="reset-trackers">Reset trackers</button></p>
                 </div>
             </form>

@@ -119,7 +119,11 @@ let expansion_counts = {
 
 function update_expansion_texts() {
     for (let e of items.expansions) {
-        document.getElementById(e + "-count").innerHTML = "× " + String(expansion_counts[e]) + "/" + document.getElementById("S-" + e + "-count").value;
+        let count = document.getElementById("S-" + e + "-count").valueAsNumber
+        if (expansion_counts[e] > count) {
+            expansion_counts[e] = count;
+        };
+        document.getElementById(e + "-count").innerHTML = "× " + String(expansion_counts[e]) + "/" + String(count);
         
         if (e == "beam_ammo_expansion") {
             let dark_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
@@ -173,7 +177,8 @@ let ammo_elts = {
         "beam_ammo_expansion-total",
     ]
 };
-function update_split_ammo(split) {
+function update_split_ammo() {
+    let split = document.getElementById("S-ammo-split").checked;
     for (let a_elt of ammo_elts.split) {
         document.getElementById(a_elt).hidden = !split;
     };
@@ -224,17 +229,8 @@ for (let e of items.expansions) {
     expansion_tracker_div.appendChild(e_total);
     
     document.getElementById("S-" + e + "-per").addEventListener("change", event => update_expansion_texts())
-    document.getElementById("S-" + e + "-count").addEventListener("change",
-        function(event) {
-            if (expansion_counts[e] > event.target.valueAsNumber) {
-                expansion_counts[e] = event.target.valueAsNumber;
-            };
-            update_expansion_texts();
-        }
-    )
+    document.getElementById("S-" + e + "-count").addEventListener("change", event => update_expansion_texts())
 };
-update_expansion_texts();
-update_split_ammo(false);
 
 let keys_collected = {
     dark_agon_key: new Set(),
@@ -311,7 +307,7 @@ boxes_checkbox.addEventListener("change",
 );
 
 let ammo_split_checkbox = document.getElementById("S-ammo-split");
-ammo_split_checkbox.addEventListener("change", event => update_split_ammo(event.target.checked));
+ammo_split_checkbox.addEventListener("change", event => update_split_ammo());
 
 let number_given_inputs = [
     "S-missiles-given-launcher",
@@ -323,19 +319,6 @@ let number_given_inputs = [
 for (let ng_input of number_given_inputs) {
     document.getElementById(ng_input).addEventListener("change", event => update_expansion_texts())
 };
-
-document.getElementById("settings").addEventListener("reset",
-    function(event) {
-        let f = event.target;
-        window.setTimeout(
-            function() {
-                for (let elt of f.elements) {
-                    elt.dispatchEvent(new Event("change"));
-                };
-            }
-        )
-    }
-)
 
 document.getElementById("reset-trackers").addEventListener("click",
     function(event) {
@@ -355,3 +338,139 @@ document.getElementById("reset-trackers").addEventListener("click",
         };
     }
 )
+
+function get_settings() {
+    let settings =  {
+        general: {
+            dark: document.getElementById("S-dark").checked,
+            animation: document.getElementById("S-animation").checked,
+            boxes: document.getElementById("S-boxes").checked,
+        },
+        ammo_split: document.getElementById("S-ammo-split").checked,
+        
+        given: {
+            missile_launcher: document.getElementById("S-missiles-given-launcher").valueAsNumber,
+            seeker_launcher: document.getElementById("S-missiles-given-seeker").valueAsNumber,
+            power_bomb: document.getElementById("S-power-bombs-given").valueAsNumber,
+            dark_beam: document.getElementById("S-dark-ammo-given").valueAsNumber,
+            light_beam: document.getElementById("S-light-ammo-given").valueAsNumber,
+        },
+        expansions: {},
+    };
+    
+    for (let e of items.expansions) {
+        settings.expansions[e] = {
+            count: document.getElementById("S-" + e + "-count").valueAsNumber,
+            per: document.getElementById("S-" + e + "-per").valueAsNumber,
+        };
+    };
+    
+    return settings;
+};
+
+function set_settings(settings) {
+    if (settings.hasOwnProperty("general")) {
+        document.getElementById("S-dark").checked = settings.general.dark;
+        document.getElementById("S-animation").checked = settings.general.animation;
+        document.getElementById("S-boxes").checked = settings.general.boxes;
+    };
+    document.getElementById("S-ammo-split").checked = settings.ammo_split;
+    
+    if (settings.hasOwnProperty("given")) {
+        document.getElementById("S-missiles-given-launcher").value = settings.given.missile_launcher;
+        document.getElementById("S-missiles-given-seeker").value = settings.given.seeker_launcher;
+        document.getElementById("S-power-bombs-given").value = settings.given.power_bomb;
+        document.getElementById("S-dark-ammo-given").value = settings.given.dark_beam;
+        document.getElementById("S-light-ammo-given").value = settings.given.light_beam;
+    };
+    if (settings.hasOwnProperty("expansions")) {
+        for (let e of items.expansions) {
+            document.getElementById("S-" + e + "-count").value = settings.expansions[e].count;
+            document.getElementById("S-" + e + "-per").value = settings.expansions[e].per;
+        };
+    };
+    update_split_ammo();
+    update_expansion_texts();
+};
+
+let vanilla_settings = {
+    ammo_split: false,
+    
+    given: {
+        missile_launcher: 5,
+        seeker_launcher: 5,
+        power_bomb: 2,
+        dark_beam: 50,
+        light_beam: 50,
+    },
+    
+    expansions: {
+        energy_tank: {
+            count: 14,
+            per: 100,
+        },
+        missile_expansion: {
+            count: 49,
+            per: 5,
+        },
+        power_bomb_expansion: {
+            count: 8,
+            per: 1,
+        },
+        beam_ammo_expansion: {
+            count: 4,
+            per: 100,
+        },
+        dark_ammo_expansion: {
+            count: 0,
+            per: 0,
+        },
+        light_ammo_expansion: {
+            count: 0,
+            per: 0,
+        },
+    },
+};
+document.getElementById("set-vanilla").addEventListener("click", event => set_settings(vanilla_settings))
+
+let randovania_settings = {
+    ammo_split: true,
+    
+    given: {
+        missile_launcher: 5,
+        seeker_launcher: 0,
+        power_bomb: 2,
+        dark_beam: 50,
+        light_beam: 50,
+    },
+    
+    expansions: {
+        energy_tank: {
+            count: 14,
+            per: 100,
+        },
+        missile_expansion: {
+            count: 33,
+            per: 5,
+        },
+        power_bomb_expansion: {
+            count: 8,
+            per: 1,
+        },
+        beam_ammo_expansion: {
+            count: 0,
+            per: 0,
+        },
+        dark_ammo_expansion: {
+            count: 10,
+            per: 20,
+        },
+        light_ammo_expansion: {
+            count: 10,
+            per: 20,
+        },
+    },
+};
+document.getElementById("set-randovania").addEventListener("click", event => set_settings(randovania_settings))
+
+set_settings(vanilla_settings)
