@@ -27,8 +27,10 @@ body {
 
 main {
     display: flex;
+    flex-wrap: wrap;
     column-gap: 2em;
     justify-items: center;
+    width: 100%;
 }
 
 .column {
@@ -39,7 +41,7 @@ main {
     line-height: 0.5;
 }
 
-form {
+#settings {
     width: max-content;
     line-height: 2;
 }
