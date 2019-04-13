@@ -35,14 +35,14 @@ let items = {
         "cobalt_translator",
     ],
     
-    expansions: {
-        energy_tank: {max: 14, per: 100},
-        missile_expansion: {max: 49, per: 5},
-        power_bomb_expansion: {max: 8, per: 1},
-        beam_ammo_expansion: {max: 4, per: 50},
-        dark_ammo_expansion: {max: 10, per: 20},
-        light_ammo_expansion: {max: 10, per: 20},
-    },
+    expansions: [
+        "energy_tank",
+        "missile_expansion",
+        "power_bomb_expansion",
+        "beam_ammo_expansion",
+        "dark_ammo_expansion",
+        "light_ammo_expansion",
+    ],
     
     keys: {
         dark_agon_key: 3,
@@ -52,21 +52,13 @@ let items = {
     },
 };
 
-let expansions_order = [
-    "energy_tank",
-    "missile_expansion",
-    "power_bomb_expansion",
-    "beam_ammo_expansion",
-    "dark_ammo_expansion",
-    "light_ammo_expansion",
-];
 let keys_order = [
     "dark_agon_key",
     "dark_torvus_key",
     "ing_hive_key",
     "sky_temple_key",
 ];
-let item_list = items.upgrades.filter(u => u != "").concat(expansions_order)
+let item_list = items.upgrades.filter(u => u != "").concat(items.expansions)
 for (let k of keys_order) {
     for (let n = 0; n < items.keys[k]; n++) {
         item_list.push(k + "_" + String(n + 1))
@@ -126,15 +118,15 @@ let expansion_counts = {
 };
 
 function update_expansion_texts() {
-    for (let e of expansions_order) {
-        document.getElementById(e + "-count").innerHTML = "× " + String(expansion_counts[e]) + "/" + String(items.expansions[e].max);
+    for (let e of items.expansions) {
+        document.getElementById(e + "-count").innerHTML = "× " + String(expansion_counts[e]) + "/" + document.getElementById("S-" + e + "-count").value;
         
         if (e == "beam_ammo_expansion") {
-            let dark_total = expansion_counts[e] * items.expansions[e].per;
+            let dark_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
             if (upgrades_collected.has("dark_beam")) {
-                dark_total += document.getElementById("S-dark-ammo-given").valueAsNumber;
+                dark_total += document.getElementById("S-dark_ammo_expansion-given").valueAsNumber;
             };
-            let light_total = expansion_counts[e] * items.expansions[e].per;
+            let light_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
             if (upgrades_collected.has("light_beam")) {
                 light_total += document.getElementById("S-light-ammo-given").valueAsNumber;
             };
@@ -157,7 +149,7 @@ function update_expansion_texts() {
             } else if (e == "light_ammo_expansion" && upgrades_collected.has("light_beam")) {
                 total += document.getElementById("S-light-ammo-given").valueAsNumber;
             };
-            total += expansion_counts[e] * items.expansions[e].per
+            total += expansion_counts[e] * document.getElementById("S-" + e + "-per").valueAsNumber
             document.getElementById(e + "-total").innerHTML = "(total: " + String(total) + ")";
         };
     };
@@ -189,15 +181,18 @@ function update_split_ammo(split) {
         document.getElementById(a_elt).hidden = split;
     };
     document.getElementById("S-beam_ammo_expansion-per").disabled = split;
+    document.getElementById("S-beam_ammo_expansion-count").disabled = split;
     document.getElementById("S-dark_ammo_expansion-per").disabled = !split;
+    document.getElementById("S-dark_ammo_expansion-count").disabled = !split;
     document.getElementById("S-light_ammo_expansion-per").disabled = !split;
+    document.getElementById("S-light_ammo_expansion-count").disabled = !split;
 };
 
 function expansion_onclick(e) {
     return function(event) {
         if (event.shiftKey && expansion_counts[e] > 0) {
             expansion_counts[e]--;
-        } else if (!event.shiftKey && expansion_counts[e] < items.expansions[e].max) {
+        } else if (!event.shiftKey && expansion_counts[e] < document.getElementById("S-" + e + "-count").valueAsNumber) {
             expansion_counts[e]++;
         };
         update_expansion_texts()
@@ -205,7 +200,7 @@ function expansion_onclick(e) {
 };
 
 let expansion_tracker_div = document.getElementById("expansion-tracker");
-for (let e of expansions_order) {
+for (let e of items.expansions) {
     let e_div = document.createElement("div");
     e_div.id = e + "-box";
     e_div.className = "image-box";
@@ -228,9 +223,12 @@ for (let e of expansions_order) {
     e_total.className = "expansion-text";
     expansion_tracker_div.appendChild(e_total);
     
-    document.getElementById("S-" + e + "-per").addEventListener("change",
+    document.getElementById("S-" + e + "-per").addEventListener("change", event => update_expansion_texts())
+    document.getElementById("S-" + e + "-count").addEventListener("change",
         function(event) {
-            items.expansions[e].per = event.target.valueAsNumber;
+            if (expansion_counts[e] > event.target.valueAsNumber) {
+                expansion_counts[e] = event.target.valueAsNumber;
+            };
             update_expansion_texts();
         }
     )
@@ -345,7 +343,7 @@ document.getElementById("reset-trackers").addEventListener("click",
             upgrade_onclick(u)()
         };
         
-        for (let e of expansions_order) {
+        for (let e of items.expansions) {
             expansion_counts[e] = 0;
         };
         update_expansion_texts();
