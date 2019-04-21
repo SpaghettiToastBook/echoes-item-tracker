@@ -128,7 +128,7 @@ function update_expansion_texts() {
         if (e == "beam_ammo_expansion") {
             let dark_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
             if (upgrades_collected.has("dark_beam")) {
-                dark_total += document.getElementById("S-dark_ammo_expansion-given").valueAsNumber;
+                dark_total += document.getElementById("S-dark-ammo-given").valueAsNumber;
             };
             let light_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
             if (upgrades_collected.has("light_beam")) {
