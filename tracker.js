@@ -419,7 +419,7 @@ let vanilla_settings = {
         },
         beam_ammo_expansion: {
             count: 4,
-            per: 100,
+            per: 50,
         },
         dark_ammo_expansion: {
             count: 0,
