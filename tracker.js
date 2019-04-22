@@ -88,14 +88,14 @@ function upgrade_onclick(u) {
     };
 };
 
-let upgrade_tracker_div = document.getElementById("upgrade-tracker");
+let upgrade_tracker = document.getElementById("upgrade-tracker");
 for (let u of items.upgrades) {
     if (u != "") {
         let u_div = document.createElement("div");
         u_div.id = u + "-box";
         u_div.className = "image-box";
         u_div.addEventListener("click", upgrade_onclick(u));
-        upgrade_tracker_div.appendChild(u_div);
+        upgrade_tracker.appendChild(u_div);
         
         let u_img = document.createElement("img");
         u_img.id = u;
@@ -104,7 +104,7 @@ for (let u of items.upgrades) {
         u_img.title = formatted_name(u);
         u_div.appendChild(u_img);
     } else {
-        upgrade_tracker_div.appendChild(document.createElement("div"));
+        upgrade_tracker.appendChild(document.createElement("div"));
     };
 };
 
@@ -238,13 +238,13 @@ function expansion_onclick(e) {
     };
 };
 
-let expansion_tracker_div = document.getElementById("expansion-tracker");
+let expansion_tracker = document.getElementById("expansion-tracker");
 for (let e of items.expansions) {
     let e_div = document.createElement("div");
     e_div.id = e + "-box";
     e_div.className = "image-box";
     e_div.addEventListener("click", expansion_onclick(e));
-    expansion_tracker_div.appendChild(e_div);
+    expansion_tracker.appendChild(e_div);
     
     let e_img = document.createElement("img");
     e_img.id = e;
@@ -255,12 +255,12 @@ for (let e of items.expansions) {
     let e_count = document.createElement("div");
     e_count.id = e + "-count";
     e_count.className = "expansion-text";
-    expansion_tracker_div.appendChild(e_count);
+    expansion_tracker.appendChild(e_count);
     
     let e_total = document.createElement("div");
     e_total.id = e + "-total";
     e_total.className = "expansion-text";
-    expansion_tracker_div.appendChild(e_total);
+    expansion_tracker.appendChild(e_total);
     
     document.getElementById("S-" + e + "-per").addEventListener("change", event => update_expansion_texts())
     document.getElementById("S-" + e + "-count").addEventListener("change", event => update_expansion_texts())
@@ -290,16 +290,16 @@ function key_onclick(k, n) {
     };
 };
 
-let key_tracker_div = document.getElementById("key-tracker");
+let key_tracker = document.getElementById("key-tracker");
 for (let k of keys_order) {
     let k_label = document.createElement("div");
     k_label.className = "key-label";
     k_label.innerHTML = formatted_name(k) + "s:";
-    key_tracker_div.appendChild(k_label)
+    key_tracker.appendChild(k_label)
     
     for (let n = 0; n < items.keys[k]; n++) {
         if (n == 3 || n == 6) {
-            key_tracker_div.appendChild(document.createElement("div"));
+            key_tracker.appendChild(document.createElement("div"));
         };
         
         let kn = k + "_" + String(n + 1);
@@ -308,7 +308,7 @@ for (let k of keys_order) {
         k_div.id = kn + "-box";
         k_div.className = "image-box";
         k_div.addEventListener("click", key_onclick(k, n));
-        key_tracker_div.appendChild(k_div);
+        key_tracker.appendChild(k_div);
         
         let k_img = document.createElement("img");
         k_img.id = kn;
