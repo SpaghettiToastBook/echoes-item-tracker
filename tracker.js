@@ -391,6 +391,9 @@ animation_checkbox.addEventListener("change",
         for (let i of item_list) {
             document.getElementById(i).src = dir + "/" + i.replace(/_\d$/, "") + ".gif";
         };
+        for (let k of keys_order) {
+            document.getElementById(k).src = dir + "/" + k + ".gif";
+        };
     }
 );
 
