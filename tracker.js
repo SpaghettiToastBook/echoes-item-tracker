@@ -157,6 +157,7 @@ function update_expansion_texts() {
             document.getElementById(e + "-total").innerHTML = "(total: " + String(total) + ")";
         };
     };
+    update_percentage();
 };
 
 let ammo_elts = {
@@ -177,6 +178,7 @@ let ammo_elts = {
         "beam_ammo_expansion-total",
     ]
 };
+
 function update_split_ammo() {
     let split = document.getElementById("S-ammo-split").checked;
     for (let a_elt of ammo_elts.split) {
@@ -191,6 +193,38 @@ function update_split_ammo() {
     document.getElementById("S-dark_ammo_expansion-count").disabled = !split;
     document.getElementById("S-light_ammo_expansion-per").disabled = !split;
     document.getElementById("S-light_ammo_expansion-count").disabled = !split;
+    
+    update_percentage();
+};
+
+function update_percentage() {
+    // Note: ETM and keys don't count toward the in-game percentage
+    let settings = get_settings();
+    
+    let num_collected = upgrades_collected.size
+    if (upgrades_collected.has("energy_transfer_module")) {
+        num_collected--;
+    };
+    for (let count of Object.values(expansion_counts)) {
+        num_collected += count;
+    };
+    
+    let num_items = 25;
+    for (let e_settings of Object.values(get_settings().expansions)) {
+        num_items += e_settings.count;
+    };
+    
+    if (settings.ammo_split) {
+        num_collected -= expansion_counts["beam_ammo_expansion"];
+        num_items -= settings.expansions.beam_ammo_expansion.count;
+    } else {
+        num_collected -= expansion_counts["dark_ammo_expansion"];
+        num_collected -= expansion_counts["light_ammo_expansion"];
+        num_items -= settings.expansions.dark_ammo_expansion.count;
+        num_items -= settings.expansions.light_ammo_expansion.count;
+    };
+    
+    document.getElementById("percentage").innerHTML = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
 };
 
 function expansion_onclick(e) {
@@ -305,6 +339,8 @@ boxes_checkbox.addEventListener("change",
         };
     }
 );
+
+document.getElementById("S-percentage").addEventListener("change", event => document.getElementById("percentage").hidden = !event.target.checked)
 
 let ammo_split_checkbox = document.getElementById("S-ammo-split");
 ammo_split_checkbox.addEventListener("change", event => update_split_ammo());

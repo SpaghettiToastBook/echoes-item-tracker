@@ -11,7 +11,10 @@
         <section class="column">
             <div id="upgrade-tracker" class="tracker"></div>
             <br/>
-            <div id="expansion-tracker" class="tracker"></div>
+            <div id="expansion-tracker-container">
+                <div id="expansion-tracker" class="tracker"></div>
+                <p id="percentage" class="percentage-text"></p>
+            </div>
             <br/>
             <div id="key-tracker" class="tracker"></div>
         </section>
@@ -25,6 +28,8 @@
                     <label><input type="checkbox" id="S-animation" checked=""/>Use animations</label>
                     <br/>
                     <label><input type="checkbox" id="S-boxes"/>Draw boxes around collected upgrades and keys</label>
+                    <br/>
+                    <label><input type="checkbox" id="S-percentage" checked=""/>Show item collection percentage</label>
                     <br/>
                     <label><input type="checkbox" id="S-ammo-split"/>Split Beam Ammo Expansions</label>
                 </fieldset>
@@ -83,6 +88,7 @@
                 <ul>
                     <li>For upgrades and keys, click on them to toggle whether or not they've been collected.</li>
                     <li>For energy tanks and expansions, click to increment the count, and Shift-click to decrement it.</li>
+                    <li>Note that temple keys and the Energy Transfer Module don't count toward the item completion percentage.</li>
                 </ul>
             </section>
             <section>
