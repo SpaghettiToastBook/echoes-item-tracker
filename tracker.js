@@ -354,7 +354,7 @@ for (let k of keys_order) {
     key_tracker_numeric.appendChild(k_cell);
     
     let k_label = document.createElement("div");
-    k_label.className = "key-label-numeric";
+    k_label.className = "key-numeric-label";
     k_label.innerHTML = formatted_name(k) + "s";
     k_cell.appendChild(k_label);
     

@@ -4,7 +4,7 @@
     --column-space: 2em;
     --grid-cell-length: 40px;
     --uncollected-opacity: 0.35;
-    --tracker-font-size: 150%;
+    --tracker-font-size: 140%;
 }
 
 [hidden] {
@@ -133,6 +133,10 @@ input[type="number"] {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+.key-numeric-label {
+    font-size: var(--tracker-font-size);
 }
 
 .key-numeric-entry {
