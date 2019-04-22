@@ -387,6 +387,8 @@ function get_settings() {
             dark: document.getElementById("S-dark").checked,
             animation: document.getElementById("S-animation").checked,
             boxes: document.getElementById("S-boxes").checked,
+            expansion_tracker: document.getElementById("S-expansion-tracker").checked,
+            percentage: document.getElementById("S-percentage").checked,
         },
         ammo_split: document.getElementById("S-ammo-split").checked,
         
@@ -415,6 +417,8 @@ function set_settings(settings) {
         document.getElementById("S-dark").checked = settings.general.dark;
         document.getElementById("S-animation").checked = settings.general.animation;
         document.getElementById("S-boxes").checked = settings.general.boxes;
+        document.getElementById("S-expansion-tracker").checked = settings.general.expansion_tracker;
+        document.getElementById("S-percentage").checked = settings.general.percentage;
     };
     document.getElementById("S-ammo-split").checked = settings.ammo_split;
     
