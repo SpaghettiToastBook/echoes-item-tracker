@@ -340,6 +340,12 @@ boxes_checkbox.addEventListener("change",
     }
 );
 
+document.getElementById("S-expansion-tracker").addEventListener("change",
+    function(event) {
+        document.getElementById("expansion-tracker-container").hidden = !event.target.checked;
+        document.getElementById("S-percentage").disabled = !event.target.checked;
+    }
+)
 document.getElementById("S-percentage").addEventListener("change", event => document.getElementById("percentage").hidden = !event.target.checked)
 
 let ammo_split_checkbox = document.getElementById("S-ammo-split");
