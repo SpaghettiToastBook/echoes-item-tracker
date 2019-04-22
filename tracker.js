@@ -416,8 +416,8 @@ document.getElementById("S-percentage").addEventListener("change", event => docu
 
 document.getElementById("S-individual-keys").addEventListener("change",
     function(event) {
-        document.getElementById("key-tracker-individual").hidden = event.target.checked;
-        document.getElementById("key-tracker-numeric").hidden = !event.target.checked;
+        document.getElementById("key-tracker-individual").hidden = !event.target.checked;
+        document.getElementById("key-tracker-numeric").hidden = event.target.checked;
     }
 )
 
