@@ -37,10 +37,6 @@ main {
     flex: 1;
 }
 
-#tracker-column {
-    line-height: 0.5;
-}
-
 #settings {
     width: max-content;
     line-height: 2;
@@ -58,6 +54,7 @@ input[type="number"] {
 .tracker {
     display: grid;
     grid-gap: 8px 8px;
+    grid-auto-rows: var(--grid-cell-length);
     width: max-content;
     align-items: center;
     justify-items: center;
@@ -97,11 +94,10 @@ input[type="number"] {
 }
 
 #expansion-tracker {
-    grid-auto-rows: var(--grid-cell-length);
     grid-template-columns: var(--grid-cell-length) 10.5ch auto;
 }
 
-.expansion-text {
+.count-text {
     font-size: var(--tracker-font-size);
     justify-self: start;
 }
@@ -111,8 +107,7 @@ input[type="number"] {
     justify-self: start;
 }
 
-#key-tracker {
-    grid-auto-rows: var(--grid-cell-length);
+#key-tracker-individual {
     grid-template-columns: max-content repeat(3, var(--grid-cell-length));
 }
 
@@ -126,4 +121,20 @@ input[type="number"] {
 .key-label {
     font-size: var(--tracker-font-size);
     justify-self: end;
+}
+
+#key-tracker-numeric {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+}
+
+.key-numeric-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.key-numeric-entry {
+    grid-template-columns: repeat(2, max-content);
 }

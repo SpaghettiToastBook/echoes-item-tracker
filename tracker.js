@@ -254,12 +254,12 @@ for (let e of items.expansions) {
     
     let e_count = document.createElement("div");
     e_count.id = e + "-count";
-    e_count.className = "expansion-text";
+    e_count.className = "count-text";
     expansion_tracker.appendChild(e_count);
     
     let e_total = document.createElement("div");
     e_total.id = e + "-total";
-    e_total.className = "expansion-text";
+    e_total.className = "count-text";
     expansion_tracker.appendChild(e_total);
     
     document.getElementById("S-" + e + "-per").addEventListener("change", event => update_expansion_texts())
@@ -273,8 +273,15 @@ let keys_collected = {
     sky_temple_key: new Set(),
 };
 
+function update_key_texts() {
+    for (let k of keys_order) {
+        let k_count = document.getElementById(k + "-count")
+        k_count.innerHTML = "× " + String(keys_collected[k].size) + "/" + String(items.keys[k]);
+    };
+}
+
 function key_onclick(k, n) {
-    let kn = k + "_" + String(n + 1);
+    let kn = k + "_" + String(n);
     return function() {
         let kn_elt = document.getElementById(kn);
         let kn_box = document.getElementById(kn + "-box");
@@ -287,28 +294,49 @@ function key_onclick(k, n) {
             kn_elt.classList.add("collected");
             kn_box.classList.add("collected");
         };
+        update_key_texts();
     };
 };
 
-let key_tracker = document.getElementById("key-tracker");
+function key_numeric_onclick(k) {
+    return function(event) {
+        if (event.shiftKey) {
+            for (let n = items.keys[k]; n >= 1; n--) {
+                if (keys_collected[k].has(n)) {
+                    key_onclick(k, n)();
+                    return;
+                };
+            };
+        } else {
+            for (let n = 1; n <= items.keys[k]; n++) {
+                if (!keys_collected[k].has(n)) {
+                    key_onclick(k, n)();
+                    return;
+                };
+            };
+        };
+    };
+};
+
+let key_tracker_individual = document.getElementById("key-tracker-individual");
 for (let k of keys_order) {
     let k_label = document.createElement("div");
     k_label.className = "key-label";
     k_label.innerHTML = formatted_name(k) + "s:";
-    key_tracker.appendChild(k_label)
+    key_tracker_individual.appendChild(k_label)
     
-    for (let n = 0; n < items.keys[k]; n++) {
-        if (n == 3 || n == 6) {
-            key_tracker.appendChild(document.createElement("div"));
+    for (let n = 1; n <= items.keys[k]; n++) {
+        if (n == 4 || n == 7) {
+            key_tracker_individual.appendChild(document.createElement("div"));
         };
         
-        let kn = k + "_" + String(n + 1);
+        let kn = k + "_" + String(n);
         
         let k_div = document.createElement("div");
         k_div.id = kn + "-box";
         k_div.className = "image-box";
         k_div.addEventListener("click", key_onclick(k, n));
-        key_tracker.appendChild(k_div);
+        key_tracker_individual.appendChild(k_div);
         
         let k_img = document.createElement("img");
         k_img.id = kn;
@@ -318,6 +346,41 @@ for (let k of keys_order) {
         k_div.appendChild(k_img);
     };
 };
+
+let key_tracker_numeric = document.getElementById("key-tracker-numeric");
+for (let k of keys_order) {
+    let k_cell = document.createElement("div");
+    k_cell.className = "key-numeric-cell";
+    key_tracker_numeric.appendChild(k_cell);
+    
+    let k_label = document.createElement("div");
+    k_label.className = "key-label-numeric";
+    k_label.innerHTML = formatted_name(k) + "s";
+    k_cell.appendChild(k_label);
+    
+    let k_entry = document.createElement("div");
+    k_entry.classList.add("tracker");
+    k_entry.classList.add("key-numeric-entry");
+    k_cell.appendChild(k_entry);
+    
+    let k_div = document.createElement("div");
+    k_div.id = k + "-box";
+    k_div.className = "image-box";
+    k_div.addEventListener("click", key_numeric_onclick(k));
+    k_entry.appendChild(k_div);
+    
+    let k_img = document.createElement("img");
+    k_img.id = k;
+    k_img.src = "images/" + k + ".gif";
+    k_img.title = formatted_name(k);
+    k_div.appendChild(k_img);
+    
+    let k_count = document.createElement("div");
+    k_count.id = k + "-count";
+    k_count.className = "count-text";
+    k_entry.appendChild(k_count);
+};
+update_key_texts();
 
 document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("dark", event.target.checked));
 
@@ -347,6 +410,13 @@ document.getElementById("S-expansion-tracker").addEventListener("change",
     }
 )
 document.getElementById("S-percentage").addEventListener("change", event => document.getElementById("percentage").hidden = !event.target.checked)
+
+document.getElementById("S-individual-keys").addEventListener("change",
+    function(event) {
+        document.getElementById("key-tracker-individual").hidden = event.target.checked;
+        document.getElementById("key-tracker-numeric").hidden = !event.target.checked;
+    }
+)
 
 let ammo_split_checkbox = document.getElementById("S-ammo-split");
 ammo_split_checkbox.addEventListener("change", event => update_split_ammo());
@@ -389,6 +459,7 @@ function get_settings() {
             boxes: document.getElementById("S-boxes").checked,
             expansion_tracker: document.getElementById("S-expansion-tracker").checked,
             percentage: document.getElementById("S-percentage").checked,
+            individual_keys: document.getElementById("S-individual-keys").checked,
         },
         ammo_split: document.getElementById("S-ammo-split").checked,
         
@@ -419,6 +490,7 @@ function set_settings(settings) {
         document.getElementById("S-boxes").checked = settings.general.boxes;
         document.getElementById("S-expansion-tracker").checked = settings.general.expansion_tracker;
         document.getElementById("S-percentage").checked = settings.general.percentage;
+        document.getElementById("S-individual-keys").checked = settings.general.individual_keys;
     };
     document.getElementById("S-ammo-split").checked = settings.ammo_split;
     
