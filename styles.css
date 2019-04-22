@@ -37,7 +37,7 @@ main {
     flex: 1;
 }
 
-.column:first-child {
+#tracker-column {
     line-height: 0.5;
 }
 
