@@ -9,7 +9,6 @@ let items = {
         "dark_suit",
         "morph_ball_bomb",
         "violet_translator",
-        
         "super_missile",
         "darkburst",
         "sunburst",
@@ -17,15 +16,11 @@ let items = {
         "light_suit",
         "power_bomb",
         "amber_translator",
-        
         "seeker_launcher",
-        "",
         "dark_visor",
         "echo_visor",
-        "",
         "boost_ball",
         "emerald_translator",
-        
         "energy_transfer_module",
         "space_jump_boots",
         "gravity_boost",
@@ -52,16 +47,51 @@ let items = {
     },
 };
 
+let upgrades_order = [
+    "missile_launcher",
+    "dark_beam",
+    "light_beam",
+    "annihilator_beam",
+    "dark_suit",
+    "morph_ball_bomb",
+    "violet_translator",
+    
+    "super_missile",
+    "darkburst",
+    "sunburst",
+    "sonic_boom",
+    "light_suit",
+    "power_bomb",
+    "amber_translator",
+    
+    "seeker_launcher",
+    "",
+    "dark_visor",
+    "echo_visor",
+    "",
+    "boost_ball",
+    "emerald_translator",
+    
+    "energy_transfer_module",
+    "space_jump_boots",
+    "gravity_boost",
+    "grapple_beam",
+    "screw_attack",
+    "spider_ball",
+    "cobalt_translator",
+]
+
 let keys_order = [
     "dark_agon_key",
     "dark_torvus_key",
     "ing_hive_key",
     "sky_temple_key",
 ];
-let item_list = items.upgrades.filter(u => u != "").concat(items.expansions)
+
+let item_list = items.upgrades.concat(items.expansions)
 for (let k of keys_order) {
-    for (let n = 0; n < items.keys[k]; n++) {
-        item_list.push(k + "_" + String(n + 1))
+    for (let n = 1; n <= items.keys[k]; n++) {
+        item_list.push(k + "_" + String(n))
     };
 };
 
@@ -69,69 +99,69 @@ function formatted_name(item_name) {
     return item_name.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 };
 
-let upgrades_collected = new Set();
-
-function upgrade_onclick(u) {
-    return function() {
-        let u_elt = document.getElementById(u);
-        let u_box = document.getElementById(u + "-box");
-        if (upgrades_collected.has(u)) {
-            upgrades_collected.delete(u)
-            u_elt.classList.remove("collected");
-            u_box.classList.remove("collected");
-        } else {
-            upgrades_collected.add(u)
-            u_elt.classList.add("collected");
-            u_box.classList.add("collected");
-        };
-        update_expansion_texts()
+function set_toggle(set, value, boolean) {
+    if (boolean === undefined) {
+        boolean = !set.has(value);
     };
-};
-
-let upgrade_tracker = document.getElementById("upgrade-tracker");
-for (let u of items.upgrades) {
-    if (u != "") {
-        let u_div = document.createElement("div");
-        u_div.id = u + "-box";
-        u_div.className = "image-box";
-        u_div.addEventListener("click", upgrade_onclick(u));
-        upgrade_tracker.appendChild(u_div);
-        
-        let u_img = document.createElement("img");
-        u_img.id = u;
-        u_img.className = "upgrade";
-        u_img.src = "images/" + u + ".gif";
-        u_img.title = formatted_name(u);
-        u_div.appendChild(u_img);
+    
+    if (boolean) {
+        set.add(value);
     } else {
-        upgrade_tracker.appendChild(document.createElement("div"));
+        set.delete(value);
     };
 };
 
-let expansion_counts = {
-    energy_tank: 0,
-    missile_expansion: 0,
-    power_bomb_expansion: 0,
-    beam_ammo_expansion: 0,
-    dark_ammo_expansion: 0,
-    light_ammo_expansion: 0,
-};
+let tracker_state = {
+    upgrades_collected: new Set(),
+    expansion_counts: {
+        energy_tank: 0,
+        missile_expansion: 0,
+        power_bomb_expansion: 0,
+        beam_ammo_expansion: 0,
+        dark_ammo_expansion: 0,
+        light_ammo_expansion: 0,
+    },
+    keys_collected: {
+        dark_agon_key: new Set(),
+        dark_torvus_key: new Set(),
+        ing_hive_key: new Set(),
+        sky_temple_key: new Set(),
+    }
+}
+
+function update_trackers() {
+    update_split_ammo();
+    for (let u of items.upgrades) {
+        document.getElementById(u).classList.toggle("collected", tracker_state.upgrades_collected.has(u))
+        document.getElementById(u + "-box").classList.toggle("collected", tracker_state.upgrades_collected.has(u))
+    };
+    update_expansion_texts();
+    for (let k of keys_order) {
+        for (let n = 1; n <= items.keys[k]; n++) {
+            let kn = k + "_" + String(n);
+            document.getElementById(kn).classList.toggle("collected", tracker_state.keys_collected[k].has(n))
+            document.getElementById(kn + "-box").classList.toggle("collected", tracker_state.keys_collected[k].has(n))
+        };
+    };
+    update_key_texts();
+    update_percentage();
+}
 
 function update_expansion_texts() {
     for (let e of items.expansions) {
         let count = document.getElementById("S-" + e + "-count").valueAsNumber
-        if (expansion_counts[e] > count) {
-            expansion_counts[e] = count;
+        if (tracker_state.expansion_counts[e] > count) {
+            tracker_state.expansion_counts[e] = count;
         };
-        document.getElementById(e + "-count").innerHTML = "× " + String(expansion_counts[e]) + "/" + String(count);
+        document.getElementById(e + "-count").innerHTML = "× " + String(tracker_state.expansion_counts[e]) + "/" + String(count);
         
         if (e == "beam_ammo_expansion") {
-            let dark_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
-            if (upgrades_collected.has("dark_beam")) {
+            let dark_total = tracker_state.expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
+            if (tracker_state.upgrades_collected.has("dark_beam")) {
                 dark_total += document.getElementById("S-dark-ammo-given").valueAsNumber;
             };
-            let light_total = expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
-            if (upgrades_collected.has("light_beam")) {
+            let light_total = tracker_state.expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
+            if (tracker_state.upgrades_collected.has("light_beam")) {
                 light_total += document.getElementById("S-light-ammo-given").valueAsNumber;
             };
             document.getElementById(e + "-total").innerHTML = "(total: " + String(dark_total) + " D, " + String(light_total) + " L)";
@@ -140,25 +170,61 @@ function update_expansion_texts() {
             if (e == "energy_tank") {
                 total += 99;
             } else if (e == "missile_expansion") {
-                if (upgrades_collected.has("missile_launcher")) {
+                if (tracker_state.upgrades_collected.has("missile_launcher")) {
                     total += document.getElementById("S-missiles-given-launcher").valueAsNumber;
                 };
-                if (upgrades_collected.has("seeker_launcher")) {
+                if (tracker_state.upgrades_collected.has("seeker_launcher")) {
                     total += document.getElementById("S-missiles-given-seeker").valueAsNumber;
                 };
-            } else if (e == "power_bomb_expansion" && upgrades_collected.has("power_bomb")) {
+            } else if (e == "power_bomb_expansion" && tracker_state.upgrades_collected.has("power_bomb")) {
                 total += document.getElementById("S-power-bombs-given").valueAsNumber;
-            } else if (e == "dark_ammo_expansion" && upgrades_collected.has("dark_beam")) {
+            } else if (e == "dark_ammo_expansion" && tracker_state.upgrades_collected.has("dark_beam")) {
                 total += document.getElementById("S-dark-ammo-given").valueAsNumber;
-            } else if (e == "light_ammo_expansion" && upgrades_collected.has("light_beam")) {
+            } else if (e == "light_ammo_expansion" && tracker_state.upgrades_collected.has("light_beam")) {
                 total += document.getElementById("S-light-ammo-given").valueAsNumber;
             };
-            total += expansion_counts[e] * document.getElementById("S-" + e + "-per").valueAsNumber
+            total += tracker_state.expansion_counts[e] * document.getElementById("S-" + e + "-per").valueAsNumber
             document.getElementById(e + "-total").innerHTML = "(total: " + String(total) + ")";
         };
     };
-    update_percentage();
 };
+
+function update_percentage() {
+    // Note: ETM and keys don't count toward the in-game percentage
+    let settings = get_settings();
+    
+    let num_collected = tracker_state.upgrades_collected.size
+    if (tracker_state.upgrades_collected.has("energy_transfer_module")) {
+        num_collected--;
+    };
+    for (let count of Object.values(tracker_state.expansion_counts)) {
+        num_collected += count;
+    };
+    
+    let num_items = 25;
+    for (let e_settings of Object.values(get_settings().expansions)) {
+        num_items += e_settings.count;
+    };
+    
+    if (settings.ammo_split) {
+        num_collected -= tracker_state.expansion_counts["beam_ammo_expansion"];
+        num_items -= settings.expansions.beam_ammo_expansion.count;
+    } else {
+        num_collected -= tracker_state.expansion_counts["dark_ammo_expansion"];
+        num_collected -= tracker_state.expansion_counts["light_ammo_expansion"];
+        num_items -= settings.expansions.dark_ammo_expansion.count;
+        num_items -= settings.expansions.light_ammo_expansion.count;
+    };
+    
+    document.getElementById("percentage").innerHTML = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
+};
+
+function update_key_texts() {
+    for (let k of keys_order) {
+        let k_count = document.getElementById(k + "-count")
+        k_count.innerHTML = "× " + String(tracker_state.keys_collected[k].size) + "/" + String(items.keys[k]);
+    };
+}
 
 let ammo_elts = {
     split: [
@@ -193,48 +259,43 @@ function update_split_ammo() {
     document.getElementById("S-dark_ammo_expansion-count").disabled = !split;
     document.getElementById("S-light_ammo_expansion-per").disabled = !split;
     document.getElementById("S-light_ammo_expansion-count").disabled = !split;
-    
-    update_percentage();
 };
 
-function update_percentage() {
-    // Note: ETM and keys don't count toward the in-game percentage
-    let settings = get_settings();
-    
-    let num_collected = upgrades_collected.size
-    if (upgrades_collected.has("energy_transfer_module")) {
-        num_collected--;
+function upgrade_onclick(u) {
+    return function() {
+        set_toggle(tracker_state.upgrades_collected, u);
+        update_trackers();
     };
-    for (let count of Object.values(expansion_counts)) {
-        num_collected += count;
-    };
-    
-    let num_items = 25;
-    for (let e_settings of Object.values(get_settings().expansions)) {
-        num_items += e_settings.count;
-    };
-    
-    if (settings.ammo_split) {
-        num_collected -= expansion_counts["beam_ammo_expansion"];
-        num_items -= settings.expansions.beam_ammo_expansion.count;
+};
+
+let upgrade_tracker = document.getElementById("upgrade-tracker");
+for (let u of upgrades_order) {
+    if (u != "") {
+        let u_div = document.createElement("div");
+        u_div.id = u + "-box";
+        u_div.className = "image-box";
+        u_div.addEventListener("click", upgrade_onclick(u));
+        upgrade_tracker.appendChild(u_div);
+        
+        let u_img = document.createElement("img");
+        u_img.id = u;
+        u_img.className = "upgrade";
+        u_img.src = "images/" + u + ".gif";
+        u_img.title = formatted_name(u);
+        u_div.appendChild(u_img);
     } else {
-        num_collected -= expansion_counts["dark_ammo_expansion"];
-        num_collected -= expansion_counts["light_ammo_expansion"];
-        num_items -= settings.expansions.dark_ammo_expansion.count;
-        num_items -= settings.expansions.light_ammo_expansion.count;
+        upgrade_tracker.appendChild(document.createElement("div"));
     };
-    
-    document.getElementById("percentage").innerHTML = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
 };
 
 function expansion_onclick(e) {
     return function(event) {
-        if (event.shiftKey && expansion_counts[e] > 0) {
-            expansion_counts[e]--;
-        } else if (!event.shiftKey && expansion_counts[e] < document.getElementById("S-" + e + "-count").valueAsNumber) {
-            expansion_counts[e]++;
+        if (event.shiftKey && tracker_state.expansion_counts[e] > 0) {
+            tracker_state.expansion_counts[e]--;
+        } else if (!event.shiftKey && tracker_state.expansion_counts[e] < document.getElementById("S-" + e + "-count").valueAsNumber) {
+            tracker_state.expansion_counts[e]++;
         };
-        update_expansion_texts()
+        update_trackers();
     };
 };
 
@@ -262,39 +323,15 @@ for (let e of items.expansions) {
     e_total.className = "count-text";
     expansion_tracker.appendChild(e_total);
     
-    document.getElementById("S-" + e + "-per").addEventListener("change", event => update_expansion_texts())
-    document.getElementById("S-" + e + "-count").addEventListener("change", event => update_expansion_texts())
+    document.getElementById("S-" + e + "-per").addEventListener("change", event => update_trackers())
+    document.getElementById("S-" + e + "-count").addEventListener("change", event => update_trackers())
 };
-
-let keys_collected = {
-    dark_agon_key: new Set(),
-    dark_torvus_key: new Set(),
-    ing_hive_key: new Set(),
-    sky_temple_key: new Set(),
-};
-
-function update_key_texts() {
-    for (let k of keys_order) {
-        let k_count = document.getElementById(k + "-count")
-        k_count.innerHTML = "× " + String(keys_collected[k].size) + "/" + String(items.keys[k]);
-    };
-}
 
 function key_onclick(k, n) {
     let kn = k + "_" + String(n);
     return function() {
-        let kn_elt = document.getElementById(kn);
-        let kn_box = document.getElementById(kn + "-box");
-        if (keys_collected[k].has(n)) {
-            keys_collected[k].delete(n)
-            kn_elt.classList.remove("collected");
-            kn_box.classList.remove("collected");
-        } else {
-            keys_collected[k].add(n)
-            kn_elt.classList.add("collected");
-            kn_box.classList.add("collected");
-        };
-        update_key_texts();
+        set_toggle(tracker_state.keys_collected[k], n)
+        update_trackers();
     };
 };
 
@@ -302,14 +339,14 @@ function key_numeric_onclick(k) {
     return function(event) {
         if (event.shiftKey) {
             for (let n = items.keys[k]; n >= 1; n--) {
-                if (keys_collected[k].has(n)) {
+                if (tracker_state.keys_collected[k].has(n)) {
                     key_onclick(k, n)();
                     return;
                 };
             };
         } else {
             for (let n = 1; n <= items.keys[k]; n++) {
-                if (!keys_collected[k].has(n)) {
+                if (!tracker_state.keys_collected[k].has(n)) {
                     key_onclick(k, n)();
                     return;
                 };
@@ -380,7 +417,49 @@ for (let k of keys_order) {
     k_count.className = "count-text";
     k_entry.appendChild(k_count);
 };
-update_key_texts();
+
+document.getElementById("save-state").addEventListener("click",
+    function() {
+        window.localStorage.setItem("state", JSON.stringify(tracker_state,
+            function(key, value) {
+                if (Object.prototype.toString.call(value) == "[object Set]") {
+                    return Array.from(value);
+                } else {
+                    return value;
+                };
+            }
+        ))
+    }
+);
+document.getElementById("load-state").addEventListener("click",
+    function() {
+        let tracker_state_json = window.localStorage.getItem("state");
+        if (tracker_state_json !== null) {
+            tracker_state = JSON.parse(tracker_state_json,
+                function(key, value) {
+                    if (Array.isArray(value)) {
+                        return new Set(value);
+                    } else {
+                        return value;
+                    };
+                }
+            );
+            update_trackers();
+        };
+    }
+);
+document.getElementById("reset-state").addEventListener("click",
+    function(event) {
+        tracker_state.upgrades_collected.clear();
+        for (let e of items.expansions) {
+            tracker_state.expansion_counts[e] = 0;
+        };
+        for (let k of keys_order) {
+            tracker_state.keys_collected[k].clear();
+        };
+        update_trackers();
+    }
+);
 
 document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("dark", event.target.checked));
 
@@ -422,7 +501,7 @@ document.getElementById("S-individual-keys").addEventListener("change",
 )
 
 let ammo_split_checkbox = document.getElementById("S-ammo-split");
-ammo_split_checkbox.addEventListener("change", event => update_split_ammo());
+ammo_split_checkbox.addEventListener("change", event => update_trackers());
 
 let number_given_inputs = [
     "S-missiles-given-launcher",
@@ -432,27 +511,8 @@ let number_given_inputs = [
     "S-light-ammo-given",
 ];
 for (let ng_input of number_given_inputs) {
-    document.getElementById(ng_input).addEventListener("change", event => update_expansion_texts())
+    document.getElementById(ng_input).addEventListener("change", event => update_trackers())
 };
-
-document.getElementById("reset-trackers").addEventListener("click",
-    function(event) {
-        for (let u of new Set(upgrades_collected)) {
-            upgrade_onclick(u)()
-        };
-        
-        for (let e of items.expansions) {
-            expansion_counts[e] = 0;
-        };
-        update_expansion_texts();
-        
-        for (let k of keys_order) {
-            for (let n of new Set(keys_collected[k])) {
-                key_onclick(k, n)();
-            }; 
-        };
-    }
-)
 
 function get_settings() {
     let settings =  {
@@ -510,8 +570,10 @@ function set_settings(settings) {
             document.getElementById("S-" + e + "-per").value = settings.expansions[e].per;
         };
     };
-    update_split_ammo();
-    update_expansion_texts();
+    
+    for (let input of document.getElementById("settings").elements) {
+        input.dispatchEvent(new Event("change"));
+    };
 };
 
 let vanilla_settings = {
@@ -552,7 +614,6 @@ let vanilla_settings = {
         },
     },
 };
-document.getElementById("set-vanilla").addEventListener("click", event => set_settings(vanilla_settings))
 
 let randovania_settings = {
     ammo_split: true,
@@ -592,6 +653,18 @@ let randovania_settings = {
         },
     },
 };
-document.getElementById("set-randovania").addEventListener("click", event => set_settings(randovania_settings))
 
-set_settings(vanilla_settings)
+document.getElementById("save-settings").addEventListener("click", event => window.localStorage.setItem("settings", JSON.stringify(get_settings())));
+document.getElementById("load-settings").addEventListener("click",
+    function() {
+        let settings_json = window.localStorage.getItem("settings");
+        if (settings_json !== null) {
+            set_settings(JSON.parse(settings_json));
+            update_trackers();
+        };
+    }
+);
+document.getElementById("reset-settings-vanilla").addEventListener("click", event => set_settings(vanilla_settings));
+document.getElementById("reset-settings-randovania").addEventListener("click", event => set_settings(randovania_settings));
+
+set_settings(vanilla_settings);

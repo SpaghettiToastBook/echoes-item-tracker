@@ -18,72 +18,81 @@
             <p id="key-tracker-numeric" class="tracker" hidden=""></p>
         </div>
         <section class="column">
-            <h1>Settings</h1>
-            <form id="settings" autocomplete="off">
-                <fieldset>
-                    <legend>General</legend>
-                    <label><input type="checkbox" id="S-dark" checked=""/>Use dark mode</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-animation" checked=""/>Use animations</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-boxes"/>Draw boxes around collected upgrades and keys</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-expansion-tracker" checked=""/>Show expansion tracker</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-percentage" checked=""/>Show item collection percentage</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-individual-keys" checked=""/>Show individual keys</label>
-                    <br/>
-                    <label><input type="checkbox" id="S-ammo-split"/>Split Beam Ammo Expansions</label>
-                </fieldset>
-                <fieldset>
-                    <legend>Ammo given by upgrades</legend>
-                    <label><input type="number" id="S-missiles-given-launcher" min="0" value="5"/> missiles given by Missile Launcher</label>
-                    <br/>
-                    <label><input type="number" id="S-missiles-given-seeker" min="0" value="5"/> missiles given by Seeker Launcher</label>
-                    <br/>
-                    <label><input type="number" id="S-power-bombs-given" min="0" value="2"/> power bombs given by main Power Bomb upgrade</label>
-                    <br/>
-                    <label><input type="number" id="S-dark-ammo-given" min="0" value="50"/> dark ammo given by Dark Beam</label>
-                    <br/>
-                    <label><input type="number" id="S-light-ammo-given" min="0" value="50"/> light ammo given by Light Beam</label>
-                </fieldset>
-                <fieldset>
-                    <legend>Expansion counts</legend>
-                    <label><input type="number" id="S-energy_tank-count" min="0" value="14"/> Energy Tanks</label>
-                    <br/>
-                    <label><input type="number" id="S-missile_expansion-count" min="0" value="49"/> Missile Expansions</label>
-                    <br/>
-                    <label><input type="number" id="S-power_bomb_expansion-count" min="0" value="8"/> Power Bomb Expansions</label>
-                    <br/>
-                    <label><input type="number" id="S-beam_ammo_expansion-count" min="0" value="4"/> Beam Ammo Expansions</label>
-                    <br/>
-                    <label><input type="number" id="S-dark_ammo_expansion-count" min="0" value="0" disabled=""/> Dark Ammo Expansions</label>
-                    <br/>
-                    <label><input type="number" id="S-light_ammo_expansion-count" min="0" value="0" disabled=""/> Light Ammo Expansions</label>
-                </fieldset>
-                <fieldset>
-                    <legend>Ammo given by expansions</legend>
-                    <label><input type="number" id="S-energy_tank-per" min="0" value="100"/> energy per Energy Tank</label>
-                    <br/>
-                    <label><input type="number" id="S-missile_expansion-per" min="0" value="5"/> missiles per Missile Expansion</label>
-                    <br/>
-                    <label><input type="number" id="S-power_bomb_expansion-per" min="0" value="1"/> power bombs per Power Bomb Expansion</label>
-                    <br/>
-                    <label><input type="number" id="S-beam_ammo_expansion-per" min="0" value="50"/> beam ammo per Beam Ammo Expansion</label>
-                    <br/>
-                    <label><input type="number" id="S-dark_ammo_expansion-per" min="0" value="0" disabled=""/> dark ammo per Dark Ammo Expansion</label>
-                    <br/>
-                    <label><input type="number" id="S-light_ammo_expansion-per" min="0" value="0" disabled=""/> light ammo per Light Ammo Expansion</label>
-                </fieldset>
-                <div id="buttons">
-                    <div>
-                        <p><button type="button" id="set-vanilla">Vanilla game settings</button></p>
-                        <p><button type="button" id="set-randovania">Default Randovania settings</button></p>
+            <div id="settings-column-inner">
+                <h1>Save/Load</h1>
+                <form id="save-load" autocomplete="off">
+                    <div id="save-load-state">
+                        <p><button type="button" id="save-state">Save tracker state</button></p>
+                        <p><button type="button" id="load-state">Load tracker state</button></p>
+                        <p><button type="button" id="reset-state">Reset tracker state</button></p>
                     </div>
-                    <p><button type="button" id="reset-trackers">Reset trackers</button></p>
-                </div>
-            </form>
+                    <div id="save-load-settings">
+                        <p><button type="button" id="save-settings">Save settings</button></p>
+                        <p><button type="button" id="load-settings">Load settings</button></p>
+                        <p><button type="button" id="reset-settings-vanilla">Reset to vanilla game settings</button></p>
+                        <p><button type="button" id="reset-settings-randovania">Reset to default Randovania settings</button></p>
+                    </div>
+                </form>
+                <h1>Settings</h1>
+                <form id="settings" autocomplete="off">
+                    <fieldset>
+                        <legend>General</legend>
+                        <label><input type="checkbox" id="S-dark" checked=""/>Use dark mode</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-animation" checked=""/>Use animations</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-boxes"/>Draw boxes around collected upgrades and keys</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-expansion-tracker" checked=""/>Show expansion tracker</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-percentage" checked=""/>Show item collection percentage</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-individual-keys" checked=""/>Show individual keys</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-ammo-split"/>Split Beam Ammo Expansions</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Ammo given by upgrades</legend>
+                        <label><input type="number" id="S-missiles-given-launcher" min="0" value="5"/> missiles given by Missile Launcher</label>
+                        <br/>
+                        <label><input type="number" id="S-missiles-given-seeker" min="0" value="5"/> missiles given by Seeker Launcher</label>
+                        <br/>
+                        <label><input type="number" id="S-power-bombs-given" min="0" value="2"/> power bombs given by main Power Bomb upgrade</label>
+                        <br/>
+                        <label><input type="number" id="S-dark-ammo-given" min="0" value="50"/> dark ammo given by Dark Beam</label>
+                        <br/>
+                        <label><input type="number" id="S-light-ammo-given" min="0" value="50"/> light ammo given by Light Beam</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Expansion counts</legend>
+                        <label><input type="number" id="S-energy_tank-count" min="0" value="14"/> Energy Tanks</label>
+                        <br/>
+                        <label><input type="number" id="S-missile_expansion-count" min="0" value="49"/> Missile Expansions</label>
+                        <br/>
+                        <label><input type="number" id="S-power_bomb_expansion-count" min="0" value="8"/> Power Bomb Expansions</label>
+                        <br/>
+                        <label><input type="number" id="S-beam_ammo_expansion-count" min="0" value="4"/> Beam Ammo Expansions</label>
+                        <br/>
+                        <label><input type="number" id="S-dark_ammo_expansion-count" min="0" value="0" disabled=""/> Dark Ammo Expansions</label>
+                        <br/>
+                        <label><input type="number" id="S-light_ammo_expansion-count" min="0" value="0" disabled=""/> Light Ammo Expansions</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Ammo given by expansions</legend>
+                        <label><input type="number" id="S-energy_tank-per" min="0" value="100"/> energy per Energy Tank</label>
+                        <br/>
+                        <label><input type="number" id="S-missile_expansion-per" min="0" value="5"/> missiles per Missile Expansion</label>
+                        <br/>
+                        <label><input type="number" id="S-power_bomb_expansion-per" min="0" value="1"/> power bombs per Power Bomb Expansion</label>
+                        <br/>
+                        <label><input type="number" id="S-beam_ammo_expansion-per" min="0" value="50"/> beam ammo per Beam Ammo Expansion</label>
+                        <br/>
+                        <label><input type="number" id="S-dark_ammo_expansion-per" min="0" value="0" disabled=""/> dark ammo per Dark Ammo Expansion</label>
+                        <br/>
+                        <label><input type="number" id="S-light_ammo_expansion-per" min="0" value="0" disabled=""/> light ammo per Light Ammo Expansion</label>
+                    </fieldset>
+                </form>
+            </div>
         </section>
         <div class="column">
             <section>

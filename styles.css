@@ -37,14 +37,22 @@ main {
     flex: 1;
 }
 
+#settings-column-inner {
+    width: max-content;
+}
+
 #settings {
     width: max-content;
     line-height: 2;
 }
 
-#buttons {
+#save-load {
     display: flex;
     justify-content: space-between;
+}
+
+#save-load-settings {
+    text-align: right;
 }
 
 input[type="number"] {
