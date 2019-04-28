@@ -111,6 +111,45 @@ function set_toggle(set, value, boolean) {
     };
 };
 
+function divmod(a, b) {
+    let q = Math.floor(a / b)
+    return [q, a - (b * q)];
+};
+
+let timer_state = {
+    running: false,
+    time: 0,
+    time_before_last_start: 0,
+    time_of_last_start: Date.now(),
+};
+
+function update_timer() {
+    timer_state.time = timer_state.time_before_last_start + (timer_state.running ? (Date.now() - timer_state.time_of_last_start) : 0);
+    
+    let time = timer_state.time;
+    let h, m, s, ms;
+    [h, time] = divmod(time, 60 * 60 * 1000);
+    [m, time] = divmod(time, 60 * 1000);
+    [s, ms] = divmod(time, 1000);
+    
+    document.getElementById("timer-h").innerHTML = h > 0 ? String(h) + ":" : "";
+    document.getElementById("timer-m").innerHTML = String(m).padStart(2, "0") + ":";
+    document.getElementById("timer-s").innerHTML = String(s).padStart(2, "0");
+    document.getElementById("timer-ms").innerHTML = "." + String(ms).padStart(3, "0");
+};
+window.setInterval(update_timer, 10);
+
+document.getElementById("timer").addEventListener("click",
+    function(event) {
+        timer_state.running = !timer_state.running;
+        if (timer_state.running) {
+            timer_state.time_of_last_start = Date.now();
+        } else {
+            timer_state.time_before_last_start = timer_state.time;
+        };
+    }
+)
+
 let tracker_state = {
     upgrades_collected: new Set(),
     expansion_counts: {
@@ -461,6 +500,15 @@ document.getElementById("reset-state").addEventListener("click",
     }
 );
 
+document.getElementById("reset-timer").addEventListener("click",
+    function(event) {
+        timer_state.running = false;
+        timer_state.time_before_last_start = 0;
+        timer_state.time_of_last_start = Date.now();
+        update_timer();
+    }
+)
+
 document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("dark", event.target.checked));
 
 let animation_checkbox = document.getElementById("S-animation")
@@ -484,6 +532,8 @@ boxes_checkbox.addEventListener("change",
         };
     }
 );
+
+document.getElementById("S-timer").addEventListener("change", event => document.getElementById("timer").hidden = !event.target.checked);
 
 document.getElementById("S-expansion-tracker").addEventListener("change",
     function(event) {
@@ -520,6 +570,7 @@ function get_settings() {
             dark: document.getElementById("S-dark").checked,
             animation: document.getElementById("S-animation").checked,
             boxes: document.getElementById("S-boxes").checked,
+            timer: document.getElementById("S-timer").checked,
             expansion_tracker: document.getElementById("S-expansion-tracker").checked,
             percentage: document.getElementById("S-percentage").checked,
             individual_keys: document.getElementById("S-individual-keys").checked,
@@ -551,6 +602,7 @@ function set_settings(settings) {
         document.getElementById("S-dark").checked = settings.general.dark;
         document.getElementById("S-animation").checked = settings.general.animation;
         document.getElementById("S-boxes").checked = settings.general.boxes;
+        document.getElementById("S-timer").checked = settings.general.timer
         document.getElementById("S-expansion-tracker").checked = settings.general.expansion_tracker;
         document.getElementById("S-percentage").checked = settings.general.percentage;
         document.getElementById("S-individual-keys").checked = settings.general.individual_keys;

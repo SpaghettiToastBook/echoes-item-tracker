@@ -9,22 +9,26 @@
 <body class="dark">
     <main>
         <div class="column" id="tracker-column">
-            <p id="upgrade-tracker" class="tracker"></p>
-            <div id="expansion-tracker-container">
-                <p id="expansion-tracker" class="tracker"></p>
-                <p id="percentage" class="percentage-text"></p>
+            <div class="column-inner">
+                <p id="upgrade-tracker" class="tracker"></p>
+                <div id="expansion-tracker-container">
+                    <p id="expansion-tracker" class="tracker"></p>
+                    <p id="percentage" class="percentage-text"></p>
+                </div>
+                <p id="key-tracker-individual" class="tracker"></p>
+                <p id="key-tracker-numeric" class="tracker" hidden=""></p>
+                <p id="timer" class="unselectable"><span id="timer-h"></span><span id="timer-m">00:</span><span id="timer-s">00</span><span id="timer-ms">.000</span></p>
             </div>
-            <p id="key-tracker-individual" class="tracker"></p>
-            <p id="key-tracker-numeric" class="tracker" hidden=""></p>
         </div>
         <section class="column">
-            <div id="settings-column-inner">
+            <div class="column-inner">
                 <h1>Save/Load</h1>
                 <form id="save-load" autocomplete="off">
                     <div id="save-load-state">
                         <p><button type="button" id="save-state">Save tracker state</button></p>
                         <p><button type="button" id="load-state">Load tracker state</button></p>
                         <p><button type="button" id="reset-state">Reset tracker state</button></p>
+                        <p><button type="button" id="reset-timer">Reset timer</button></p>
                     </div>
                     <div id="save-load-settings">
                         <p><button type="button" id="save-settings">Save settings</button></p>
@@ -42,6 +46,8 @@
                         <label><input type="checkbox" id="S-animation" checked=""/>Use animations</label>
                         <br/>
                         <label><input type="checkbox" id="S-boxes"/>Draw boxes around collected upgrades and keys</label>
+                        <br/>
+                        <label><input type="checkbox" id="S-timer"/>Show timer</label>
                         <br/>
                         <label><input type="checkbox" id="S-expansion-tracker" checked=""/>Show expansion tracker</label>
                         <br/>
@@ -100,8 +106,9 @@
                 <ul>
                     <li>For upgrades and keys shown individually, click on them to toggle whether or not they've been collected.</li>
                     <li>For energy tanks, expansions, and keys shown numerically, click to increment the count, and Shift-click to decrement it.</li>
-                    <li>Note that temple keys and the Energy Transfer Module don't count toward the item completion percentage.</li>
+                    <li>Click the timer to start or stop it.</li>
                 </ul>
+                Note that temple keys and the Energy Transfer Module don't count toward the item completion percentage.
             </section>
             <section>
                 <h1>Info</h1>
