@@ -126,7 +126,7 @@ input[type="number"] {
 }
 
 #expansion-tracker {
-    grid-template-columns: var(--grid-cell-length) 10.5ch auto;
+    grid-template-columns: var(--grid-cell-length) 7ch auto;
 }
 
 .count-text {
