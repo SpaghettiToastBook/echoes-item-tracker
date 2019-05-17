@@ -203,6 +203,11 @@ function update_expansion_texts() {
             if (tracker_state.upgrades_collected.has("light_beam")) {
                 light_total += document.getElementById("S-light-ammo-given").valueAsNumber;
             };
+            if (tracker_state.upgrades_collected.has("annihilator_beam")) {
+                let annihilator_ammo = document.getElementById("S-annihilator-ammo-given").valueAsNumber
+                dark_total += annihilator_ammo;
+                light_total += annihilator_ammo;
+            };
             document.getElementById(e + "-total").innerHTML = "(total: " + String(dark_total) + " D, " + String(light_total) + " L)";
         } else {
             let total = 0;
@@ -217,10 +222,20 @@ function update_expansion_texts() {
                 };
             } else if (e == "power_bomb_expansion" && tracker_state.upgrades_collected.has("power_bomb")) {
                 total += document.getElementById("S-power-bombs-given").valueAsNumber;
-            } else if (e == "dark_ammo_expansion" && tracker_state.upgrades_collected.has("dark_beam")) {
-                total += document.getElementById("S-dark-ammo-given").valueAsNumber;
-            } else if (e == "light_ammo_expansion" && tracker_state.upgrades_collected.has("light_beam")) {
-                total += document.getElementById("S-light-ammo-given").valueAsNumber;
+            } else if (e == "dark_ammo_expansion") {
+                if (tracker_state.upgrades_collected.has("dark_beam")) {
+                    total += document.getElementById("S-dark-ammo-given").valueAsNumber;
+                };
+                if (tracker_state.upgrades_collected.has("annihilator_beam")) {
+                    total += document.getElementById("S-annihilator-ammo-given").valueAsNumber;
+                };
+            } else if (e == "light_ammo_expansion") {
+                if (tracker_state.upgrades_collected.has("light_beam")) {
+                    total += document.getElementById("S-light-ammo-given").valueAsNumber;
+                };
+                if (tracker_state.upgrades_collected.has("annihilator_beam")) {
+                    total += document.getElementById("S-annihilator-ammo-given").valueAsNumber;
+                };
             };
             total += tracker_state.expansion_counts[e] * document.getElementById("S-" + e + "-per").valueAsNumber
             document.getElementById(e + "-total").innerHTML = "(total: " + String(total) + ")";
@@ -559,6 +574,7 @@ let number_given_inputs = [
     "S-power-bombs-given",
     "S-dark-ammo-given",
     "S-light-ammo-given",
+    "S-annihilator-ammo-given",
 ];
 for (let ng_input of number_given_inputs) {
     document.getElementById(ng_input).addEventListener("change", event => update_trackers())
@@ -583,6 +599,7 @@ function get_settings() {
             power_bomb: document.getElementById("S-power-bombs-given").valueAsNumber,
             dark_beam: document.getElementById("S-dark-ammo-given").valueAsNumber,
             light_beam: document.getElementById("S-light-ammo-given").valueAsNumber,
+            annihilator_beam: document.getElementById("S-annihilator-ammo-given").valueAsNumber,
         },
         expansions: {},
     };
@@ -615,6 +632,7 @@ function set_settings(settings) {
         document.getElementById("S-power-bombs-given").value = settings.given.power_bomb;
         document.getElementById("S-dark-ammo-given").value = settings.given.dark_beam;
         document.getElementById("S-light-ammo-given").value = settings.given.light_beam;
+        document.getElementById("S-annihilator-ammo-given").value = settings.given.annihilator_beam;
     };
     if (settings.hasOwnProperty("expansions")) {
         for (let e of items.expansions) {
@@ -637,6 +655,7 @@ let vanilla_settings = {
         power_bomb: 2,
         dark_beam: 50,
         light_beam: 50,
+        annihilator_beam: 0,
     },
     
     expansions: {
@@ -676,6 +695,7 @@ let randovania_settings = {
         power_bomb: 2,
         dark_beam: 50,
         light_beam: 50,
+        annihilator_beam: 0,
     },
     
     expansions: {
