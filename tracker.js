@@ -721,7 +721,7 @@ let randovania_settings = {
     
     given: {
         missile_launcher: 5,
-        seeker_launcher: 0,
+        seeker_launcher: 5,
         power_bomb: 2,
         dark_beam: 50,
         light_beam: 50,
