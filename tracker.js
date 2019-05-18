@@ -616,28 +616,58 @@ function get_settings() {
 
 function set_settings(settings) {
     if (settings.hasOwnProperty("general")) {
-        document.getElementById("S-dark").checked = settings.general.dark;
-        document.getElementById("S-animation").checked = settings.general.animation;
-        document.getElementById("S-boxes").checked = settings.general.boxes;
-        document.getElementById("S-timer").checked = settings.general.timer
-        document.getElementById("S-expansion-tracker").checked = settings.general.expansion_tracker;
-        document.getElementById("S-percentage").checked = settings.general.percentage;
-        document.getElementById("S-individual-keys").checked = settings.general.individual_keys;
+        if ("dark" in settings.general) {
+            document.getElementById("S-dark").checked = settings.general.dark;
+        };
+        if ("animations" in settings.general) {
+            document.getElementById("S-animation").checked = settings.general.animation;
+        };
+        if ("boxes" in settings.general) {
+            document.getElementById("S-boxes").checked = settings.general.boxes;
+        };
+        if ("timer" in settings.general) {
+            document.getElementById("S-timer").checked = settings.general.timer;
+        };
+        if ("expansion_tracker" in settings.general) {
+            document.getElementById("S-expansion-tracker").checked = settings.general.expansion_tracker;
+        };
+        if ("percentage" in settings.general) {
+            document.getElementById("S-percentage").checked = settings.general.percentage;
+        };
+        if ("individual_keys" in settings.general) {
+            document.getElementById("S-individual-keys").checked = settings.general.individual_keys;
+        };
     };
-    document.getElementById("S-ammo-split").checked = settings.ammo_split;
+    if ("ammo_split" in settings) {
+        document.getElementById("S-ammo-split").checked = settings.ammo_split;
+    };
     
     if (settings.hasOwnProperty("given")) {
-        document.getElementById("S-missiles-given-launcher").value = settings.given.missile_launcher;
-        document.getElementById("S-missiles-given-seeker").value = settings.given.seeker_launcher;
-        document.getElementById("S-power-bombs-given").value = settings.given.power_bomb;
-        document.getElementById("S-dark-ammo-given").value = settings.given.dark_beam;
-        document.getElementById("S-light-ammo-given").value = settings.given.light_beam;
-        document.getElementById("S-annihilator-ammo-given").value = settings.given.annihilator_beam;
+        if ("missile_launcher" in settings.given) {
+            document.getElementById("S-missiles-given-launcher").value = settings.given.missile_launcher;
+        };
+        if ("seeker_launcher" in settings.given) {
+            document.getElementById("S-missiles-given-seeker").value = settings.given.seeker_launcher;
+        };
+        if ("power_bomb" in settings.given) {
+            document.getElementById("S-power-bombs-given").value = settings.given.power_bomb;
+        };
+        if ("dark_beam" in settings.given) {
+            document.getElementById("S-dark-ammo-given").value = settings.given.dark_beam;
+        };
+        if ("light_beam" in settings.given) {
+            document.getElementById("S-light-ammo-given").value = settings.given.light_beam;
+        };
+        if ("annihilator_beam" in settings.given) {
+            document.getElementById("S-annihilator-ammo-given").value = settings.given.annihilator_beam;
+        };
     };
     if (settings.hasOwnProperty("expansions")) {
         for (let e of items.expansions) {
-            document.getElementById("S-" + e + "-count").value = settings.expansions[e].count;
-            document.getElementById("S-" + e + "-per").value = settings.expansions[e].per;
+            if (e in settings.expansions) {
+                document.getElementById("S-" + e + "-count").value = settings.expansions[e].count;
+                document.getElementById("S-" + e + "-per").value = settings.expansions[e].per;
+            };
         };
     };
     
