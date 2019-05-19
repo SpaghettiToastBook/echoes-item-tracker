@@ -524,7 +524,7 @@ document.getElementById("reset-timer").addEventListener("click",
     }
 )
 
-document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("dark", event.target.checked));
+document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("light", !event.target.checked));
 
 let animation_checkbox = document.getElementById("S-animation")
 animation_checkbox.addEventListener("change",

@@ -7,31 +7,13 @@
     --tracker-font-size: 140%;
 }
 
-[hidden] {
-    display: none !important;
+.light {
+    background-color: white;
+    color: black;
 }
 
-.unselectable {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-body {
-    font-family: sans-serif;
-    line-height: 1.5;
-}
-
-.dark {
-    background-color: black;
-    color: white;
-}
-
-.dark a {
-    filter: invert(100%);
+.light a {
+    filter: none;
 }
 
 main {
