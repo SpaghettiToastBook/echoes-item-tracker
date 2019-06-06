@@ -72,11 +72,11 @@ input[type="number"] {
 
 .image-box.boxes.collected {
     border-style: solid;
-    border-color: black;
+    border-color: white;
 }
 
-.dark .image-box.boxes.collected {
-    border-color: white;
+.light .image-box.boxes.collected {
+    border-color: black;
 }
 
 #tracker-column {
