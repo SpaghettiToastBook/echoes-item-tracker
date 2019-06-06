@@ -60,7 +60,7 @@ input[type="number"] {
 }
 
 .compact .tracker {
-    grid-gap: 4px 4px;
+    grid-gap: 2px 2px;
 }
 
 .image-box {
