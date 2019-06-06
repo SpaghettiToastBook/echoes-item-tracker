@@ -526,7 +526,7 @@ document.getElementById("reset-timer").addEventListener("click",
 
 document.getElementById("S-dark").addEventListener("change", event => document.body.classList.toggle("light", !event.target.checked));
 
-let animation_checkbox = document.getElementById("S-animation")
+let animation_checkbox = document.getElementById("S-animation");
 animation_checkbox.addEventListener("change",
     function(event) {
         let dir = (event.target.checked) ? "images" : "images-noanim"
@@ -539,7 +539,7 @@ animation_checkbox.addEventListener("change",
     }
 );
 
-let boxes_checkbox = document.getElementById("S-boxes")
+let boxes_checkbox = document.getElementById("S-boxes");
 boxes_checkbox.addEventListener("change",
     function(event) {
         for (let i of item_list) {
@@ -547,6 +547,9 @@ boxes_checkbox.addEventListener("change",
         };
     }
 );
+
+let compact_checkbox = document.getElementById("S-compact");
+compact_checkbox.addEventListener("change", event => document.getElementById("tracker-column").classList.toggle("compact", event.target.checked));
 
 document.getElementById("S-timer").addEventListener("change", event => document.getElementById("timer").hidden = !event.target.checked);
 
@@ -586,6 +589,7 @@ function get_settings() {
             dark: document.getElementById("S-dark").checked,
             animation: document.getElementById("S-animation").checked,
             boxes: document.getElementById("S-boxes").checked,
+            compact: document.getElementById("S-compact").checked,
             timer: document.getElementById("S-timer").checked,
             expansion_tracker: document.getElementById("S-expansion-tracker").checked,
             percentage: document.getElementById("S-percentage").checked,
@@ -624,6 +628,9 @@ function set_settings(settings) {
         };
         if ("boxes" in settings.general) {
             document.getElementById("S-boxes").checked = settings.general.boxes;
+        };
+        if ("compact" in settings.general) {
+            document.getElementById("S-compact").checked = settings.general.compact;
         };
         if ("timer" in settings.general) {
             document.getElementById("S-timer").checked = settings.general.timer;

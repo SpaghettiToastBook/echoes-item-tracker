@@ -59,6 +59,10 @@ input[type="number"] {
     justify-items: center;
 }
 
+.compact .tracker {
+    grid-gap: 4px 4px;
+}
+
 .image-box {
     display: flex;
     width: 100%;
