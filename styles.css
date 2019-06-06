@@ -6,7 +6,6 @@
     --upgrade-grid-rows: 4;
     --upgrade-grid-columns: 7;
     --uncollected-opacity: 0.35;
-    --tracker-font-size: 140%;
 }
 
 .light {
@@ -86,8 +85,12 @@ input[type="number"] {
 }
 
 #tracker-column {
-    font-size: var(--tracker-font-size);
+    font-size: 140%;
     line-height: 1;
+}
+
+#tracker-column.compact {
+    font-size: 120%;
 }
 
 #timer {
