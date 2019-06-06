@@ -48,6 +48,37 @@ let items = {
 };
 
 let upgrade_grid_layouts = {
+    "3×9": [
+        "missile_launcher",
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        "violet_translator",
+        "amber_translator",
+        "emerald_translator",
+        "cobalt_translator",
+        "dark_suit",
+        
+        "super_missile",
+        "darkburst",
+        "sunburst",
+        "sonic_boom",
+        "light_suit",
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        
+        "seeker_launcher",
+        "energy_transfer_module",
+        "dark_visor",
+        "echo_visor",
+        "morph_ball_bomb",
+        "power_bomb",
+        "boost_ball",
+        "spider_ball",
+        "",
+    ],
     "4×5": [
         "dark_beam",
         "light_beam",
