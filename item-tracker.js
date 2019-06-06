@@ -63,11 +63,11 @@ let upgrade_grid_layouts = {
         "darkburst",
         "sunburst",
         "sonic_boom",
-        "light_suit",
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
+        "light_suit",
         
         "seeker_launcher",
         "energy_transfer_module",
