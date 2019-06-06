@@ -694,6 +694,14 @@ animation_checkbox.addEventListener("change",
     }
 );
 
+document.getElementById("S-font-size").addEventListener("change",
+    function(event) {
+        let checked = event.target.checked;
+        document.documentElement.style.setProperty("--tracker-font-size", checked ? "120%" : "140%");
+        document.documentElement.style.setProperty("--tracker-font-size-compact", checked ? "100%" : "120%");
+    }
+);
+
 let boxes_checkbox = document.getElementById("S-boxes");
 boxes_checkbox.addEventListener("change", event => document.getElementById("tracker-column").classList.toggle("boxes", event.target.checked));
 
@@ -749,6 +757,7 @@ function get_settings() {
         ammo_split: document.getElementById("S-ammo-split").checked,
         
         layout: {
+            reduce_tracker_font_size: document.getElementById("S-font-size").checked,
             upgrade_grid_dimensions: document.getElementById("S-upgrade-grid-dimensions").value,
         },
         
@@ -807,6 +816,9 @@ function set_settings(settings) {
     if (settings.hasOwnProperty("layout")) {
         if ("upgrade_grid_dimensions" in settings.layout) {
             document.getElementById("S-upgrade-grid-dimensions").value = settings.layout.upgrade_grid_dimensions;
+        };
+        if ("reduce_tracker_font_size" in settings.layout) {
+            document.getElementById("S-font-size").checked = settings.layout.reduce_tracker_font_size;
         };
     };
     

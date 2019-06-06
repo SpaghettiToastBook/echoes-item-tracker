@@ -3,6 +3,8 @@
 :root {
     --column-space: 2em;
     --grid-cell-length: 40px;
+    --tracker-font-size: 140%;
+    --tracker-font-size-compact: 120%;
     --upgrade-grid-rows: 4;
     --upgrade-grid-columns: 7;
     --uncollected-opacity: 0.35;
@@ -85,12 +87,12 @@ input[type="number"] {
 }
 
 #tracker-column {
-    font-size: 140%;
+    font-size: var(--tracker-font-size);
     line-height: 1;
 }
 
 #tracker-column.compact {
-    font-size: 120%;
+    font-size: var(--tracker-font-size-compact);
 }
 
 #timer {
