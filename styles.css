@@ -3,6 +3,8 @@
 :root {
     --column-space: 2em;
     --grid-cell-length: 40px;
+    --upgrade-grid-rows: 4;
+    --upgrade-grid-columns: 7;
     --uncollected-opacity: 0.35;
     --tracker-font-size: 140%;
 }
@@ -74,12 +76,12 @@ input[type="number"] {
     justify-content: center;
 }
 
-.image-box.boxes.collected {
+.boxes .image-box.collected {
     border-style: solid;
     border-color: white;
 }
 
-.light .image-box.boxes.collected {
+.light .boxes .image-box.collected {
     border-color: black;
 }
 
@@ -87,7 +89,6 @@ input[type="number"] {
     font-size: var(--tracker-font-size);
     line-height: 1;
 }
-
 
 #timer {
     margin: 0px;
@@ -100,8 +101,8 @@ input[type="number"] {
 }
 
 #upgrade-tracker {
-    grid-template-rows: repeat(4, var(--grid-cell-length));
-    grid-template-columns: repeat(7, var(--grid-cell-length));
+    grid-template-rows: repeat(var(--upgrade-grid-rows), var(--grid-cell-length));
+    grid-template-columns: repeat(var(--upgrade-grid-columns), var(--grid-cell-length));
 }
 
 .upgrade {

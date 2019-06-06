@@ -12,6 +12,7 @@
         <div class="column" id="tracker-column">
             <div class="column-inner">
                 <p id="upgrade-tracker" class="tracker"></p>
+                <div id="hidden-upgrades" hidden=""></div>
                 <div id="expansion-tracker-container">
                     <p id="expansion-tracker" class="tracker"></p>
                     <p id="percentage" class="percentage-text"></p>
@@ -49,6 +50,17 @@
                         <label><input type="checkbox" id="S-boxes"/>Draw boxes around collected upgrades and keys</label>
                         <br/>
                         <label><input type="checkbox" id="S-compact"/>Compactify trackers</label>
+                        <br/>
+                        <label>
+                            Upgrade tracker grid dimensions:
+                            <select id="S-upgrade-grid-dimensions">
+                                <option>4×5</option>
+                                <option selected="">4×7</option>
+                                <option>5×4</option>
+                                <option>5×5</option>
+                                <option>7×4</option>
+                            </select>
+                        </label>
                         <br/>
                         <label><input type="checkbox" id="S-timer"/>Show timer</label>
                         <br/>

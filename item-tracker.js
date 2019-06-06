@@ -47,39 +47,163 @@ let items = {
     },
 };
 
-let upgrades_order = [
-    "missile_launcher",
-    "dark_beam",
-    "light_beam",
-    "annihilator_beam",
-    "dark_suit",
-    "morph_ball_bomb",
-    "violet_translator",
+let upgrade_grid_layouts = {
+    "4×5": [
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        "morph_ball_bomb",
+        "violet_translator",
+        
+        "super_missile",
+        "dark_visor",
+        "dark_suit",
+        "boost_ball",
+        "amber_translator",
+        
+        "seeker_launcher",
+        "echo_visor",
+        "light_suit",
+        "spider_ball",
+        "emerald_translator",
+        
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        "cobalt_translator",
+    ],
     
-    "super_missile",
-    "darkburst",
-    "sunburst",
-    "sonic_boom",
-    "light_suit",
-    "power_bomb",
-    "amber_translator",
+    "4×7": [
+        "missile_launcher",
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        "dark_suit",
+        "morph_ball_bomb",
+        "violet_translator",
+        
+        "super_missile",
+        "darkburst",
+        "sunburst",
+        "sonic_boom",
+        "light_suit",
+        "power_bomb",
+        "amber_translator",
+        
+        "seeker_launcher",
+        "",
+        "dark_visor",
+        "echo_visor",
+        "",
+        "boost_ball",
+        "emerald_translator",
+        
+        "energy_transfer_module",
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        "spider_ball",
+        "cobalt_translator",
+    ],
     
-    "seeker_launcher",
-    "",
-    "dark_visor",
-    "echo_visor",
-    "",
-    "boost_ball",
-    "emerald_translator",
+    "5×4": [
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        "morph_ball_bomb",
+        
+        "super_missile",
+        "dark_visor",
+        "dark_suit",
+        "boost_ball",
+        
+        "seeker_launcher",
+        "echo_visor",
+        "light_suit",
+        "spider_ball",
+        
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        
+        "violet_translator",
+        "amber_translator",
+        "emerald_translator",
+        "cobalt_translator",
+    ],
     
-    "energy_transfer_module",
-    "space_jump_boots",
-    "gravity_boost",
-    "grapple_beam",
-    "screw_attack",
-    "spider_ball",
-    "cobalt_translator",
-]
+    "5×5": [
+        "missile_launcher",
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        "dark_visor",
+        
+        "super_missile",
+        "darkburst",
+        "sunburst",
+        "sonic_boom",
+        "echo_visor",
+        
+        "seeker_launcher",
+        "morph_ball_bomb",
+        "power_bomb",
+        "boost_ball",
+        "spider_ball",
+        
+        "dark_suit",
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        
+        "light_suit",
+        "violet_translator",
+        "amber_translator",
+        "emerald_translator",
+        "cobalt_translator",
+    ],
+    
+    "7×4": [
+        "missile_launcher",
+        "dark_beam",
+        "light_beam",
+        "annihilator_beam",
+        
+        "super_missile",
+        "darkburst",
+        "sunburst",
+        "sonic_boom",
+        
+        "seeker_launcher",
+        "",
+        "dark_visor",
+        "echo_visor",
+        
+        "morph_ball_bomb",
+        "power_bomb",
+        "boost_ball",
+        "spider_ball",
+        
+        "space_jump_boots",
+        "gravity_boost",
+        "grapple_beam",
+        "screw_attack",
+        
+        "dark_suit",
+        "light_suit",
+        "",
+        "energy_transfer_module",
+        
+        "violet_translator",
+        "amber_translator",
+        "emerald_translator",
+        "cobalt_translator",
+    ],
+};
 
 let keys_order = [
     "dark_agon_key",
@@ -114,6 +238,12 @@ function set_toggle(set, value, boolean) {
 function divmod(a, b) {
     let q = Math.floor(a / b)
     return [q, a - (b * q)];
+};
+
+function clear_children(node) {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    };
 };
 
 let timer_state = {
@@ -170,16 +300,17 @@ let tracker_state = {
 
 function update_trackers() {
     update_split_ammo();
+    
     for (let u of items.upgrades) {
-        document.getElementById(u).classList.toggle("collected", tracker_state.upgrades_collected.has(u))
-        document.getElementById(u + "-box").classList.toggle("collected", tracker_state.upgrades_collected.has(u))
+        document.getElementById(u).classList.toggle("collected", tracker_state.upgrades_collected.has(u));
+        document.getElementById(u + "-box").classList.toggle("collected", tracker_state.upgrades_collected.has(u));
     };
     update_expansion_texts();
     for (let k of keys_order) {
         for (let n = 1; n <= items.keys[k]; n++) {
             let kn = k + "_" + String(n);
-            document.getElementById(kn).classList.toggle("collected", tracker_state.keys_collected[k].has(n))
-            document.getElementById(kn + "-box").classList.toggle("collected", tracker_state.keys_collected[k].has(n))
+            document.getElementById(kn).classList.toggle("collected", tracker_state.keys_collected[k].has(n));
+            document.getElementById(kn + "-box").classList.toggle("collected", tracker_state.keys_collected[k].has(n));
         };
     };
     update_key_texts();
@@ -322,25 +453,49 @@ function upgrade_onclick(u) {
     };
 };
 
-let upgrade_tracker = document.getElementById("upgrade-tracker");
-for (let u of upgrades_order) {
-    if (u != "") {
-        let u_div = document.createElement("div");
-        u_div.id = u + "-box";
-        u_div.className = "image-box";
-        u_div.addEventListener("click", upgrade_onclick(u));
-        upgrade_tracker.appendChild(u_div);
-        
-        let u_img = document.createElement("img");
-        u_img.id = u;
-        u_img.className = "upgrade";
-        u_img.src = "images/" + u + ".gif";
-        u_img.title = formatted_name(u);
-        u_div.appendChild(u_img);
-    } else {
-        upgrade_tracker.appendChild(document.createElement("div"));
-    };
+let upgrade_divs = {};
+for (let u of items.upgrades) {
+    let u_div = document.createElement("div");
+    u_div.id = u + "-box";
+    u_div.className = "image-box";
+    u_div.addEventListener("click", upgrade_onclick(u));
+    upgrade_divs[u] = u_div;
+    
+    let u_img = document.createElement("img");
+    u_img.id = u;
+    u_img.className = "upgrade";
+    u_img.src = "images/" + u + ".gif";
+    u_img.title = formatted_name(u);
+    u_div.appendChild(u_img);
 };
+
+function apply_upgrade_grid_dimensions(dim_str) {
+    let [rows, columns] = dim_str.split("×");
+//     rows = Number(rows);
+//     columns = Number(columns);
+    document.documentElement.style.setProperty("--upgrade-grid-rows", rows);
+    document.documentElement.style.setProperty("--upgrade-grid-columns", columns);
+    
+    let upgrade_tracker = document.getElementById("upgrade-tracker");
+    clear_children(upgrade_tracker);
+    let layout = upgrade_grid_layouts[dim_str]
+    for (let u of layout) {
+        if (u == "") {
+            upgrade_tracker.appendChild(document.createElement("div"));
+        } else {
+            upgrade_tracker.appendChild(upgrade_divs[u]);
+        };
+    };
+    
+    let hidden_upgrade_container = document.getElementById("hidden-upgrades");
+    for (let u of items.upgrades) {
+        if (layout.indexOf(u) == -1) {
+            hidden_upgrade_container.appendChild(upgrade_divs[u]);
+        };
+    };
+    
+    update_trackers();
+}
 
 function expansion_onclick(e) {
     return function(event) {
@@ -540,16 +695,12 @@ animation_checkbox.addEventListener("change",
 );
 
 let boxes_checkbox = document.getElementById("S-boxes");
-boxes_checkbox.addEventListener("change",
-    function(event) {
-        for (let i of item_list) {
-            document.getElementById(i + "-box").classList.toggle("boxes", event.target.checked)
-        };
-    }
-);
+boxes_checkbox.addEventListener("change", event => document.getElementById("tracker-column").classList.toggle("boxes", event.target.checked));
 
 let compact_checkbox = document.getElementById("S-compact");
 compact_checkbox.addEventListener("change", event => document.getElementById("tracker-column").classList.toggle("compact", event.target.checked));
+
+document.getElementById("S-upgrade-grid-dimensions").addEventListener("change", event => apply_upgrade_grid_dimensions(event.target.value));
 
 document.getElementById("S-timer").addEventListener("change", event => document.getElementById("timer").hidden = !event.target.checked);
 
@@ -596,6 +747,10 @@ function get_settings() {
             individual_keys: document.getElementById("S-individual-keys").checked,
         },
         ammo_split: document.getElementById("S-ammo-split").checked,
+        
+        layout: {
+            upgrade_grid_dimensions: document.getElementById("S-upgrade-grid-dimensions").value,
+        },
         
         given: {
             missile_launcher: document.getElementById("S-missiles-given-launcher").valueAsNumber,
@@ -647,6 +802,12 @@ function set_settings(settings) {
     };
     if ("ammo_split" in settings) {
         document.getElementById("S-ammo-split").checked = settings.ammo_split;
+    };
+    
+    if (settings.hasOwnProperty("layout")) {
+        if ("upgrade_grid_dimensions" in settings.layout) {
+            document.getElementById("S-upgrade-grid-dimensions").value = settings.layout.upgrade_grid_dimensions;
+        };
     };
     
     if (settings.hasOwnProperty("given")) {
@@ -776,4 +937,5 @@ document.getElementById("load-settings").addEventListener("click",
 document.getElementById("reset-settings-vanilla").addEventListener("click", event => set_settings(vanilla_settings));
 document.getElementById("reset-settings-randovania").addEventListener("click", event => set_settings(randovania_settings));
 
+apply_upgrade_grid_dimensions("4×7");
 set_settings(vanilla_settings);
