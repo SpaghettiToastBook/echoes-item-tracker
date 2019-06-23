@@ -53,8 +53,24 @@ input[type="number"] {
    width: 7ch;
 }
 
+#tracker-column {
+    font-size: var(--tracker-font-size);
+    line-height: 1;
+}
+
+#tracker-column.compact {
+    font-size: var(--tracker-font-size-compact);
+}
+
+#tracker-column-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .tracker {
     display: grid;
+    margin: 0.25em 0em;
     grid-gap: 8px 8px;
     grid-auto-rows: var(--grid-cell-length);
     width: max-content;
@@ -86,18 +102,11 @@ input[type="number"] {
     border-color: black;
 }
 
-#tracker-column {
-    font-size: var(--tracker-font-size);
-    line-height: 1;
-}
-
-#tracker-column.compact {
-    font-size: var(--tracker-font-size-compact);
-}
-
 #timer {
     margin: 0px;
-    text-align: center;
+    padding: 0.1em;
+    width: 100%;
+    text-align: right;
     font-size: 300%;
 }
 
@@ -117,6 +126,10 @@ input[type="number"] {
     opacity: 1;
 }
 
+#expansion-tracker-container {
+    width: 100%;
+}
+
 #expansion-tracker {
     grid-template-columns: var(--grid-cell-length) 7ch auto;
 }
@@ -125,7 +138,8 @@ input[type="number"] {
     justify-self: start;
 }
 
-.percentage-text {
+#percentage {
+    margin: 0.5em 0em;
     justify-self: start;
 }
 

@@ -712,7 +712,7 @@ document.getElementById("reset-state").addEventListener("click",
 document.getElementById("reset-timer").addEventListener("click",
     function(event) {
         timer_state.running = false;
-        timer_state.time_before_last_start = 0;
+        timer_state.time_before_last_start = 3600000;
         timer_state.time_of_last_start = Date.now();
         update_timer();
     }
