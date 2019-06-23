@@ -300,16 +300,24 @@ function update_timer() {
 };
 window.setInterval(update_timer, 10);
 
-document.getElementById("timer").addEventListener("click",
+let timer = document.getElementById("timer");
+function on_timer_toggle() {
+    timer_state.running = !timer_state.running;
+    if (timer_state.running) {
+        timer_state.time_of_last_start = Date.now();
+    } else {
+        timer_state.time_before_last_start = timer_state.time;
+    };
+};
+
+timer.addEventListener("click", event => on_timer_toggle())
+document.body.addEventListener("keyup",
     function(event) {
-        timer_state.running = !timer_state.running;
-        if (timer_state.running) {
-            timer_state.time_of_last_start = Date.now();
-        } else {
-            timer_state.time_before_last_start = timer_state.time;
+        if (event.key == "Enter") {
+            on_timer_toggle();
         };
     }
-)
+);
 
 let tracker_state = {
     upgrades_collected: new Set(),
