@@ -29,7 +29,7 @@ let items = {
         "spider_ball",
         "cobalt_translator",
     ],
-    
+
     expansions: [
         "energy_tank",
         "missile_expansion",
@@ -38,7 +38,7 @@ let items = {
         "dark_ammo_expansion",
         "light_ammo_expansion",
     ],
-    
+
     keys: {
         dark_agon_key: 3,
         dark_torvus_key: 3,
@@ -53,31 +53,31 @@ let upgrade_grid_layouts = {
         "dark_beam",
         "light_beam",
         "annihilator_beam",
+        "dark_suit",
         "violet_translator",
         "amber_translator",
         "emerald_translator",
         "cobalt_translator",
-        "dark_suit",
-        
+
         "super_missile",
         "darkburst",
         "sunburst",
         "sonic_boom",
+        "light_suit",
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
-        "light_suit",
-        
+
         "seeker_launcher",
-        "energy_transfer_module",
         "dark_visor",
         "echo_visor",
+        "energy_transfer_module",
+        "",
         "morph_ball_bomb",
         "power_bomb",
         "boost_ball",
         "spider_ball",
-        "",
     ],
     "4×5": [
         "dark_beam",
@@ -85,26 +85,26 @@ let upgrade_grid_layouts = {
         "annihilator_beam",
         "morph_ball_bomb",
         "violet_translator",
-        
+
         "super_missile",
         "dark_visor",
         "dark_suit",
         "boost_ball",
         "amber_translator",
-        
+
         "seeker_launcher",
         "echo_visor",
         "light_suit",
         "spider_ball",
         "emerald_translator",
-        
+
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
         "cobalt_translator",
     ],
-    
+
     "4×7": [
         "missile_launcher",
         "dark_beam",
@@ -113,7 +113,7 @@ let upgrade_grid_layouts = {
         "dark_suit",
         "morph_ball_bomb",
         "violet_translator",
-        
+
         "super_missile",
         "darkburst",
         "sunburst",
@@ -121,7 +121,7 @@ let upgrade_grid_layouts = {
         "light_suit",
         "power_bomb",
         "amber_translator",
-        
+
         "seeker_launcher",
         "",
         "dark_visor",
@@ -129,7 +129,7 @@ let upgrade_grid_layouts = {
         "",
         "boost_ball",
         "emerald_translator",
-        
+
         "energy_transfer_module",
         "space_jump_boots",
         "gravity_boost",
@@ -138,97 +138,97 @@ let upgrade_grid_layouts = {
         "spider_ball",
         "cobalt_translator",
     ],
-    
+
     "5×4": [
         "dark_beam",
         "light_beam",
         "annihilator_beam",
         "morph_ball_bomb",
-        
+
         "super_missile",
         "dark_visor",
         "dark_suit",
         "boost_ball",
-        
+
         "seeker_launcher",
         "echo_visor",
         "light_suit",
         "spider_ball",
-        
+
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
-        
+
         "violet_translator",
         "amber_translator",
         "emerald_translator",
         "cobalt_translator",
     ],
-    
+
     "5×5": [
         "missile_launcher",
         "dark_beam",
         "light_beam",
         "annihilator_beam",
         "dark_visor",
-        
+
         "super_missile",
         "darkburst",
         "sunburst",
         "sonic_boom",
         "echo_visor",
-        
+
         "seeker_launcher",
         "morph_ball_bomb",
         "power_bomb",
         "boost_ball",
         "spider_ball",
-        
+
         "dark_suit",
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
-        
+
         "light_suit",
         "violet_translator",
         "amber_translator",
         "emerald_translator",
         "cobalt_translator",
     ],
-    
+
     "7×4": [
         "missile_launcher",
         "dark_beam",
         "light_beam",
         "annihilator_beam",
-        
+
         "super_missile",
         "darkburst",
         "sunburst",
         "sonic_boom",
-        
+
         "seeker_launcher",
         "",
         "dark_visor",
         "echo_visor",
-        
+
         "morph_ball_bomb",
         "power_bomb",
         "boost_ball",
         "spider_ball",
-        
+
         "space_jump_boots",
         "gravity_boost",
         "grapple_beam",
         "screw_attack",
-        
+
         "dark_suit",
         "light_suit",
         "",
         "energy_transfer_module",
-        
+
         "violet_translator",
         "amber_translator",
         "emerald_translator",
@@ -258,7 +258,7 @@ function set_toggle(set, value, boolean) {
     if (boolean === undefined) {
         boolean = !set.has(value);
     };
-    
+
     if (boolean) {
         set.add(value);
     } else {
@@ -286,13 +286,13 @@ let timer_state = {
 
 function update_timer() {
     timer_state.time = timer_state.time_before_last_start + (timer_state.running ? (Date.now() - timer_state.time_of_last_start) : 0);
-    
+
     let time = timer_state.time;
     let h, m, s, ms;
     [h, time] = divmod(time, 60 * 60 * 1000);
     [m, time] = divmod(time, 60 * 1000);
     [s, ms] = divmod(time, 1000);
-    
+
     document.getElementById("timer-h").innerHTML = h > 0 ? String(h) + ":" : "";
     document.getElementById("timer-m").innerHTML = String(m).padStart(2, "0") + ":";
     document.getElementById("timer-s").innerHTML = String(s).padStart(2, "0");
@@ -339,7 +339,7 @@ let tracker_state = {
 
 function update_trackers() {
     update_split_ammo();
-    
+
     for (let u of items.upgrades) {
         document.getElementById(u).classList.toggle("collected", tracker_state.upgrades_collected.has(u));
         document.getElementById(u + "-box").classList.toggle("collected", tracker_state.upgrades_collected.has(u));
@@ -363,7 +363,7 @@ function update_expansion_texts() {
             tracker_state.expansion_counts[e] = count;
         };
         document.getElementById(e + "-count").innerHTML = "× " + String(tracker_state.expansion_counts[e]) + "/" + String(count);
-        
+
         if (e == "beam_ammo_expansion") {
             let dark_total = tracker_state.expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
             if (tracker_state.upgrades_collected.has("dark_beam")) {
@@ -416,7 +416,7 @@ function update_expansion_texts() {
 function update_percentage() {
     // Note: ETM and keys don't count toward the in-game percentage
     let settings = get_settings();
-    
+
     let num_collected = tracker_state.upgrades_collected.size
     if (tracker_state.upgrades_collected.has("energy_transfer_module")) {
         num_collected--;
@@ -424,12 +424,12 @@ function update_percentage() {
     for (let count of Object.values(tracker_state.expansion_counts)) {
         num_collected += count;
     };
-    
+
     let num_items = 25;
     for (let e_settings of Object.values(get_settings().expansions)) {
         num_items += e_settings.count;
     };
-    
+
     if (settings.ammo_split) {
         num_collected -= tracker_state.expansion_counts["beam_ammo_expansion"];
         num_items -= settings.expansions.beam_ammo_expansion.count;
@@ -439,7 +439,7 @@ function update_percentage() {
         num_items -= settings.expansions.dark_ammo_expansion.count;
         num_items -= settings.expansions.light_ammo_expansion.count;
     };
-    
+
     document.getElementById("percentage").innerHTML = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
 };
 
@@ -499,7 +499,7 @@ for (let u of items.upgrades) {
     u_div.className = "image-box";
     u_div.addEventListener("click", upgrade_onclick(u));
     upgrade_divs[u] = u_div;
-    
+
     let u_img = document.createElement("img");
     u_img.id = u;
     u_img.className = "upgrade";
@@ -514,7 +514,7 @@ function apply_upgrade_grid_dimensions(dim_str) {
 //     columns = Number(columns);
     document.documentElement.style.setProperty("--upgrade-grid-rows", rows);
     document.documentElement.style.setProperty("--upgrade-grid-columns", columns);
-    
+
     let upgrade_tracker = document.getElementById("upgrade-tracker");
     clear_children(upgrade_tracker);
     let layout = upgrade_grid_layouts[dim_str]
@@ -525,14 +525,14 @@ function apply_upgrade_grid_dimensions(dim_str) {
             upgrade_tracker.appendChild(upgrade_divs[u]);
         };
     };
-    
+
     let hidden_upgrade_container = document.getElementById("hidden-upgrades");
     for (let u of items.upgrades) {
         if (layout.indexOf(u) == -1) {
             hidden_upgrade_container.appendChild(upgrade_divs[u]);
         };
     };
-    
+
     update_trackers();
 }
 
@@ -554,23 +554,23 @@ for (let e of items.expansions) {
     e_div.className = "image-box";
     e_div.addEventListener("click", expansion_onclick(e));
     expansion_tracker.appendChild(e_div);
-    
+
     let e_img = document.createElement("img");
     e_img.id = e;
     e_img.src = "images/" + e + ".gif";
     e_img.title = formatted_name(e);
     e_div.appendChild(e_img);
-    
+
     let e_count = document.createElement("div");
     e_count.id = e + "-count";
     e_count.className = "count-text";
     expansion_tracker.appendChild(e_count);
-    
+
     let e_total = document.createElement("div");
     e_total.id = e + "-total";
     e_total.className = "count-text";
     expansion_tracker.appendChild(e_total);
-    
+
     document.getElementById("S-" + e + "-per").addEventListener("change", event => update_trackers())
     document.getElementById("S-" + e + "-count").addEventListener("change", event => update_trackers())
 };
@@ -609,20 +609,20 @@ for (let k of keys_order) {
     k_label.className = "key-label";
     k_label.innerHTML = formatted_name(k) + "s:";
     key_tracker_individual.appendChild(k_label)
-    
+
     for (let n = 1; n <= items.keys[k]; n++) {
         if (n == 4 || n == 7) {
             key_tracker_individual.appendChild(document.createElement("div"));
         };
-        
+
         let kn = k + "_" + String(n);
-        
+
         let k_div = document.createElement("div");
         k_div.id = kn + "-box";
         k_div.className = "image-box";
         k_div.addEventListener("click", key_onclick(k, n));
         key_tracker_individual.appendChild(k_div);
-        
+
         let k_img = document.createElement("img");
         k_img.id = kn;
         k_img.className = "key";
@@ -637,29 +637,29 @@ for (let k of keys_order) {
     let k_cell = document.createElement("div");
     k_cell.className = "key-numeric-cell";
     key_tracker_numeric.appendChild(k_cell);
-    
+
     let k_label = document.createElement("div");
     k_label.className = "key-numeric-label";
     k_label.innerHTML = formatted_name(k) + "s";
     k_cell.appendChild(k_label);
-    
+
     let k_entry = document.createElement("div");
     k_entry.classList.add("tracker");
     k_entry.classList.add("key-numeric-entry");
     k_cell.appendChild(k_entry);
-    
+
     let k_div = document.createElement("div");
     k_div.id = k + "-box";
     k_div.className = "image-box";
     k_div.addEventListener("click", key_numeric_onclick(k));
     k_entry.appendChild(k_div);
-    
+
     let k_img = document.createElement("img");
     k_img.id = k;
     k_img.src = "images/" + k + ".gif";
     k_img.title = formatted_name(k);
     k_div.appendChild(k_img);
-    
+
     let k_count = document.createElement("div");
     k_count.id = k + "-count";
     k_count.className = "count-text";
@@ -794,12 +794,12 @@ function get_settings() {
             individual_keys: document.getElementById("S-individual-keys").checked,
         },
         ammo_split: document.getElementById("S-ammo-split").checked,
-        
+
         layout: {
             reduce_tracker_font_size: document.getElementById("S-font-size").checked,
             upgrade_grid_dimensions: document.getElementById("S-upgrade-grid-dimensions").value,
         },
-        
+
         given: {
             missile_launcher: document.getElementById("S-missiles-given-launcher").valueAsNumber,
             seeker_launcher: document.getElementById("S-missiles-given-seeker").valueAsNumber,
@@ -810,14 +810,14 @@ function get_settings() {
         },
         expansions: {},
     };
-    
+
     for (let e of items.expansions) {
         settings.expansions[e] = {
             count: document.getElementById("S-" + e + "-count").valueAsNumber,
             per: document.getElementById("S-" + e + "-per").valueAsNumber,
         };
     };
-    
+
     return settings;
 };
 
@@ -851,7 +851,7 @@ function set_settings(settings) {
     if ("ammo_split" in settings) {
         document.getElementById("S-ammo-split").checked = settings.ammo_split;
     };
-    
+
     if (settings.hasOwnProperty("layout")) {
         if ("upgrade_grid_dimensions" in settings.layout) {
             document.getElementById("S-upgrade-grid-dimensions").value = settings.layout.upgrade_grid_dimensions;
@@ -860,7 +860,7 @@ function set_settings(settings) {
             document.getElementById("S-font-size").checked = settings.layout.reduce_tracker_font_size;
         };
     };
-    
+
     if (settings.hasOwnProperty("given")) {
         if ("missile_launcher" in settings.given) {
             document.getElementById("S-missiles-given-launcher").value = settings.given.missile_launcher;
@@ -889,7 +889,7 @@ function set_settings(settings) {
             };
         };
     };
-    
+
     for (let input of document.getElementById("settings").elements) {
         input.dispatchEvent(new Event("change"));
     };
@@ -897,7 +897,7 @@ function set_settings(settings) {
 
 let vanilla_settings = {
     ammo_split: false,
-    
+
     given: {
         missile_launcher: 5,
         seeker_launcher: 5,
@@ -906,7 +906,7 @@ let vanilla_settings = {
         light_beam: 50,
         annihilator_beam: 0,
     },
-    
+
     expansions: {
         energy_tank: {
             count: 14,
@@ -937,7 +937,7 @@ let vanilla_settings = {
 
 let randovania_settings = {
     ammo_split: true,
-    
+
     given: {
         missile_launcher: 5,
         seeker_launcher: 5,
@@ -946,7 +946,7 @@ let randovania_settings = {
         light_beam: 50,
         annihilator_beam: 0,
     },
-    
+
     expansions: {
         energy_tank: {
             count: 14,
