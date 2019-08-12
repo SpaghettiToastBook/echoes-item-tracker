@@ -293,10 +293,10 @@ function update_timer() {
     [m, time] = divmod(time, 60 * 1000);
     [s, ms] = divmod(time, 1000);
 
-    document.getElementById("timer-h").innerHTML = h > 0 ? String(h) + ":" : "";
-    document.getElementById("timer-m").innerHTML = String(m).padStart(2, "0") + ":";
-    document.getElementById("timer-s").innerHTML = String(s).padStart(2, "0");
-    document.getElementById("timer-ms").innerHTML = "." + String(ms).padStart(3, "0");
+    document.getElementById("timer-h").innerText = h > 0 ? String(h) + ":" : "";
+    document.getElementById("timer-m").innerText = String(m).padStart(2, "0") + ":";
+    document.getElementById("timer-s").innerText = String(s).padStart(2, "0");
+    document.getElementById("timer-ms").innerText = "." + String(ms).padStart(3, "0");
 };
 window.setInterval(update_timer, 10);
 
@@ -362,7 +362,7 @@ function update_expansion_texts() {
         if (tracker_state.expansion_counts[e] > count) {
             tracker_state.expansion_counts[e] = count;
         };
-        document.getElementById(e + "-count").innerHTML = "× " + String(tracker_state.expansion_counts[e]) + "/" + String(count);
+        document.getElementById(e + "-count").innerText = "× " + String(tracker_state.expansion_counts[e]) + "/" + String(count);
 
         if (e == "beam_ammo_expansion") {
             let dark_total = tracker_state.expansion_counts[e] * document.getElementById("S-beam_ammo_expansion-per").valueAsNumber;
@@ -378,7 +378,7 @@ function update_expansion_texts() {
                 dark_total += annihilator_ammo;
                 light_total += annihilator_ammo;
             };
-            document.getElementById(e + "-total").innerHTML = "(total: " + String(dark_total) + " D, " + String(light_total) + " L)";
+            document.getElementById(e + "-total").innerText = "(total: " + String(dark_total) + " D, " + String(light_total) + " L)";
         } else {
             let total = 0;
             if (e == "energy_tank") {
@@ -408,7 +408,7 @@ function update_expansion_texts() {
                 };
             };
             total += tracker_state.expansion_counts[e] * document.getElementById("S-" + e + "-per").valueAsNumber
-            document.getElementById(e + "-total").innerHTML = "(total: " + String(total) + ")";
+            document.getElementById(e + "-total").innerText = "(total: " + String(total) + ")";
         };
     };
 };
@@ -440,13 +440,13 @@ function update_percentage() {
         num_items -= settings.expansions.light_ammo_expansion.count;
     };
 
-    document.getElementById("percentage").innerHTML = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
+    document.getElementById("percentage").innerText = "Items collected: " + String(num_collected) + "/" + String(num_items) + " (" + String(Math.round(100 * num_collected / num_items)) + "%)"
 };
 
 function update_key_texts() {
     for (let k of keys_order) {
         let k_count = document.getElementById(k + "-count")
-        k_count.innerHTML = "× " + String(tracker_state.keys_collected[k].size) + "/" + String(items.keys[k]);
+        k_count.innerText = "× " + String(tracker_state.keys_collected[k].size) + "/" + String(items.keys[k]);
     };
 }
 
@@ -607,7 +607,7 @@ let key_tracker_individual = document.getElementById("key-tracker-individual");
 for (let k of keys_order) {
     let k_label = document.createElement("div");
     k_label.className = "key-label";
-    k_label.innerHTML = formatted_name(k) + "s:";
+    k_label.innerText = formatted_name(k) + "s:";
     key_tracker_individual.appendChild(k_label)
 
     for (let n = 1; n <= items.keys[k]; n++) {
@@ -640,7 +640,7 @@ for (let k of keys_order) {
 
     let k_label = document.createElement("div");
     k_label.className = "key-numeric-label";
-    k_label.innerHTML = formatted_name(k) + "s";
+    k_label.innerText = formatted_name(k) + "s";
     k_cell.appendChild(k_label);
 
     let k_entry = document.createElement("div");
