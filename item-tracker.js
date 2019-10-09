@@ -975,18 +975,19 @@ let randovania_settings = {
     },
 };
 
+function load_settings() {
+    let settings_json = window.localStorage.getItem("settings");
+    if (settings_json !== null) {
+        set_settings(JSON.parse(settings_json));
+        update_trackers();
+    };
+};
+
 document.getElementById("save-settings").addEventListener("click", event => window.localStorage.setItem("settings", JSON.stringify(get_settings())));
-document.getElementById("load-settings").addEventListener("click",
-    function() {
-        let settings_json = window.localStorage.getItem("settings");
-        if (settings_json !== null) {
-            set_settings(JSON.parse(settings_json));
-            update_trackers();
-        };
-    }
-);
+document.getElementById("load-settings").addEventListener("click", load_settings);
 document.getElementById("reset-settings-vanilla").addEventListener("click", event => set_settings(vanilla_settings));
 document.getElementById("reset-settings-randovania").addEventListener("click", event => set_settings(randovania_settings));
 
 apply_upgrade_grid_dimensions("4×7");
 set_settings(randovania_settings);
+load_settings();
