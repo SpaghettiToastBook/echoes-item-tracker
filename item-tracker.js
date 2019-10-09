@@ -989,4 +989,4 @@ document.getElementById("reset-settings-vanilla").addEventListener("click", even
 document.getElementById("reset-settings-randovania").addEventListener("click", event => set_settings(randovania_settings));
 
 apply_upgrade_grid_dimensions("4×7");
-set_settings(vanilla_settings);
+set_settings(randovania_settings);
